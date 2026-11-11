@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gdzie ukrywa się liczba 8?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap">
+<style>
+/* Układ: jeden ekran = jedna stacja lekcji, duże pola dotykowe na tablicę interaktywną */
+:root{
+  --bg:#FBFAF6; --grid:#DCE7EC; --ink:#2E2219; --soft:#6E6156; --card:#FFFFFF; --line:#D9D2C6;
+  --accent:#2F7A78; --pen:#C0392B; --ok:#3C8D4E; --warn:#C0392B;
+  --b1:#E2433A; --b2:#F08A24; --b3:#F2C12E; --b4:#4FA845; --b5:#2F8FD0; --b6:#2C4F9E; --b7:#7B4AA6; --b8:#E2433A;
+  --font:"Andika","Trebuchet MS",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1B1A17;--grid:#2A2D2F;--ink:#F3EDE4;--soft:#B9AE9F;--card:#25231F;--line:#3E3A33;--accent:#6CC1BD;--pen:#F07A6A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1B1A17;--grid:#2A2D2F;--ink:#F3EDE4;--soft:#B9AE9F;--card:#25231F;--line:#3E3A33;--accent:#6CC1BD;--pen:#F07A6A;color-scheme:dark}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font-family:var(--font);margin:0;display:flex;flex-direction:column;overflow:hidden}
+nav{display:flex;align-items:center;gap:4px;background:var(--bg);padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);overflow-x:auto;flex:none}
+nav button{font:700 16px var(--font);color:var(--soft);background:none;border:none;border-bottom:4px solid transparent;border-radius:0;padding:8px 10px;cursor:pointer;white-space:nowrap}
+nav button b{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border:2px solid currentColor;border-radius:50%;margin-right:6px;font-size:.85em}
+nav button[aria-current="true"]{color:var(--ink);border-bottom-color:var(--pen)}
+nav .sp{flex:1}
+.arrow{font-size:26px!important;color:var(--ink)!important;border:2px solid var(--ink)!important;border-radius:12px!important;width:56px;padding:4px 0!important}
+main{flex:1;min-height:0;position:relative}
+section{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,2.5vh,28px);padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));text-align:center;overflow:auto}
+h1{font-weight:700;font-size:clamp(30px,6vw,84px);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:.5px}
+h2{font-weight:700;font-size:clamp(26px,4.4vw,60px);margin:0;text-wrap:balance}
+.sub{font-size:clamp(17px,2.2vw,30px);color:var(--soft);margin:0;max-width:30ch}
+.btn{font:700 clamp(18px,2vw,26px) var(--font);background:var(--accent);color:#fff;border:none;border-radius:8px;box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 60%,#000);padding:14px 26px;cursor:pointer;min-height:56px}
+.btn.ghost{background:var(--card);color:var(--ink);border:2px solid var(--ink);box-shadow:0 4px 0 var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.count{font-weight:700;font-size:clamp(60px,11vw,150px);line-height:1;font-variant-numeric:tabular-nums;color:var(--pen);min-width:1.4em;min-height:1.15em;padding:4px 14px;background:var(--card);border:2px solid var(--line);border-radius:6px}
+button:focus-visible{outline:4px solid var(--accent);outline-offset:3px}
+/* cymbałki */
+.xylo{display:flex;align-items:flex-end;gap:clamp(4px,1vw,12px);padding:18px clamp(10px,2vw,26px);background:#C89B62;border-radius:18px;max-width:100%}
+.bar{border:none;border-radius:10px;cursor:pointer;width:clamp(30px,7vw,92px);display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:10px;color:#fff;font:800 clamp(18px,2.6vw,36px) var(--font);box-shadow:inset 0 -6px 0 rgba(0,0,0,.18);transition:transform .08s}
+.bar:active,.bar.hit{transform:translateY(4px) scale(.98)}
+.bar span{background:rgba(255,255,255,.92);color:#14243A;border-radius:999px;width:1.6em;height:1.6em;display:grid;place-items:center;font-size:.8em;opacity:0;transition:opacity .2s}
+.bar.on span{opacity:1}
+/* ośmiornica */
+#octo{width:min(92vw,820px);max-height:58vh}
+.arm{fill:none;stroke-linecap:round;cursor:pointer;transition:stroke .2s}
+.armlabel{font:700 36px var(--font);fill:var(--ink);pointer-events:none}
+/* pary */
+.kids{display:flex;flex-wrap:wrap;gap:clamp(10px,2vw,26px);justify-content:center;max-width:1000px;min-height:150px}
+.pair{display:flex;gap:8px;padding:10px 12px;border-radius:12px;border:4px dashed transparent;transition:border-color .3s}
+.paired .pair.full{border-color:var(--ok)}
+.paired .pair.solo{border-color:var(--warn)}
+.kid{width:clamp(44px,5.4vw,70px);height:auto;display:block}
+.verdict{font-weight:700;font-size:clamp(26px,4vw,56px);min-height:1.2em}
+/* flagi */
+.flags{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:900px;min-height:110px}
+.flag{width:70px;height:100px}
+.drop{width:58px;height:80px;cursor:pointer;border:none;background:none;padding:0}
+.drop.gone{opacity:.15}
+/* pisanie */
+.digits{display:flex;gap:clamp(20px,6vw,90px);flex-wrap:wrap;justify-content:center}
+.dig{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:14px}
+.dig svg{width:clamp(130px,20vw,240px);height:auto;display:block}
+.trace{fill:none;stroke:var(--grid);stroke-width:14;stroke-linecap:round;stroke-linejoin:round}
+.ink{fill:none;stroke:var(--pen);stroke-width:14;stroke-linecap:round;stroke-linejoin:round}
+.startdot{fill:var(--ok)}
+/* bateria */
+.bat{display:flex;gap:clamp(12px,3vw,40px);flex-wrap:wrap;justify-content:center}
+.lvl{border:3px solid var(--line);border-radius:10px;background:var(--card);padding:16px 22px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:170px;color:var(--ink);font:600 clamp(16px,1.8vw,22px) var(--font)}
+.lvl b{font-size:clamp(20px,2.4vw,30px)}
+.cell{width:70px;height:120px;border:5px solid var(--ink);border-radius:10px;position:relative;display:flex;flex-direction:column-reverse;padding:5px;gap:5px}
+.cell::before{content:"";position:absolute;top:-14px;left:22px;width:16px;height:9px;background:var(--ink);border-radius:3px 3px 0 0}
+.cell i{display:block;height:30%;border-radius:4px}
+.lvl.sel{border-color:var(--accent);transform:scale(1.05)}
+.reveal{position:absolute;right:max(20px,env(safe-area-inset-right,0px));top:20px;z-index:2;box-shadow:0 6px 0 var(--line);display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 26px;background:var(--card);border:2px dashed var(--accent);border-radius:10px}
+.reveal .big{font-weight:700;font-size:clamp(34px,5vw,64px);color:var(--accent);letter-spacing:2px}
+.reveal .small{font-size:clamp(18px,2.2vw,28px);color:var(--ink)}
+.reveal .small b{color:var(--pen)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+
+<nav id="nav" aria-label="Stacje lekcji"></nav>
+<main>
+<section id="start">
+  <p class="sub">MATEMATYKA · LiCZBY 8 i 9</p>
+  <h1>GDZiE UKRYWA SiĘ<br>LiCZBA 8?</h1>
+  <p class="sub" style="max-width:40ch">POZNAM LiCZBY 8 i 9 i NAUCZĘ SiĘ PiSAĆ CYFRY 8 i 9.</p>
+  <button class="btn" data-go="cymbalki">ZACZYNAMY →</button>
+</section>
+
+<section id="cymbalki" hidden>
+  <h2>ZAGRAJ i POLiCZ</h2>
+  <div class="count" id="xcount">0</div>
+  <div class="xylo" id="xylo"></div>
+  <div class="row">
+    <button class="btn" id="xokt">OKTAWA</button>
+    <button class="btn ghost" id="xplay">ZAGRAJ GAMĘ</button>
+    <button class="btn ghost" id="xreset">OD NOWA</button>
+  </div>
+  <p class="sub" id="xmsg">DOTKNiJ SZTABEK OD LEWEJ.</p>
+  <div class="reveal" id="xoktbox" hidden><span class="big">OKTAWA</span><span class="small"><b>OKTA</b> = 8 DŹWiĘKÓW, OD DO DO DO</span></div>
+</section>
+
+<section id="osmiornica" hidden>
+  <h2>iLE RAMiON MA OŚMiORNiCA?</h2>
+  <svg id="octo" viewBox="0 0 800 470" role="img" aria-label="Ośmiornica, dotknij ramion, aby je policzyć"></svg>
+  <div class="row"><div class="count" id="ocount" style="font-size:clamp(48px,8vw,110px)">0</div></div>
+  <div class="row"><button class="btn" id="oeng">PO ANGiELSKU?</button><button class="btn ghost" id="oreset">OD NOWA</button></div>
+  <div class="reveal" id="oengbox" hidden><span class="big">OCTOPUS</span><span class="small"><b>OCTO</b> = 8</span></div>
+</section>
+
+<section id="pary" hidden>
+  <h2>CZY KAŻDY MA PARĘ?</h2>
+  <div class="row">
+    <button class="btn ghost" data-kids="8">8 DZiECi</button>
+    <button class="btn ghost" data-kids="9">9 DZiECi</button>
+    <button class="btn" id="pairup">DOBiERZCiE SiĘ W PARY</button>
+  </div>
+  <div class="kids" id="kids"></div>
+  <div class="verdict" id="verdict"></div>
+</section>
+
+<section id="flagi" hidden>
+  <h2 id="ftitle">DORYSUJ TYLE FLAG, ABY BYŁO iCH RAZEM 8.</h2>
+  <div class="flags" id="flags"></div>
+  <div class="row">
+    <button class="btn" id="fadd">+ FLAGA</button>
+    <button class="btn ghost" id="fsub">− FLAGA</button>
+    <button class="btn ghost" id="fcheck">SPRAWDŹ</button>
+    <button class="btn ghost" id="fmode">KROPLE DESZCZU →</button>
+  </div>
+  <div class="verdict" id="fverdict"></div>
+</section>
+
+<section id="pisanie" hidden>
+  <h2>JAK PiSZEMY CYFRY 8 i 9?</h2>
+  <p class="sub">ZACZYNAMY OD ZiELONEJ KROPKi.</p>
+  <div class="digits">
+    <div class="dig"><svg viewBox="0 0 120 180" aria-label="Kierunek pisania cyfry 8"><path class="trace" id="t8"/><path class="ink" id="i8"/><circle class="startdot" id="d8" r="9"/></svg></div>
+    <div class="dig"><svg viewBox="0 0 120 180" aria-label="Kierunek pisania cyfry 9"><path class="trace" id="t9"/><path class="ink" id="i9"/><circle class="startdot" id="d9" r="9"/></svg></div>
+  </div>
+  <div class="row"><button class="btn" id="wplay">POKAŻ JESZCZE RAZ</button></div>
+</section>
+
+<section id="bateria" hidden>
+  <h2>MOJA BATERiA: PiSZĘ CYFRY 8 i 9</h2>
+  <div class="bat" id="bat"></div>
+</section>
+</main>
+
+<script>
+const SECTIONS=[["start","START"],["cymbalki","CYMBAŁKi"],["osmiornica","OŚMiORNiCA"],["pary","PARY"],["flagi","DORYSUJ i SKREŚL"],["pisanie","PiSANiE"],["bateria","BATERiA"]];
+const nav=document.getElementById('nav');
+const prev=document.createElement('button');prev.className='arrow';prev.textContent='←';prev.setAttribute('aria-label','Poprzedni');
+const next=document.createElement('button');next.className='arrow';next.textContent='→';next.setAttribute('aria-label','Następny');
+SECTIONS.forEach(([id,l],i)=>{const b=document.createElement('button');b.innerHTML=(i?'<b>'+i+'</b>':'')+l;b.dataset.go=id;nav.appendChild(b)});
+const sp=document.createElement('div');sp.className='sp';nav.append(sp,prev,next);
+function cur(){const h=location.hash.slice(1);return SECTIONS.some(s=>s[0]===h)?h:'start'}
+function show(){const c=cur();SECTIONS.forEach(([id])=>{document.getElementById(id).hidden=id!==c});
+  nav.querySelectorAll('[data-go]').forEach(b=>b.setAttribute('aria-current',b.dataset.go===c));
+  if(c==='pisanie')playWrite();}
+function go(id){location.hash=id}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
+function step(d){const i=SECTIONS.findIndex(s=>s[0]===cur());const n=SECTIONS[Math.max(0,Math.min(SECTIONS.length-1,i+d))][0];go(n)}
+prev.onclick=()=>step(-1);next.onclick=()=>step(1);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')step(1);if(e.key==='ArrowLeft'||e.key==='PageUp')step(-1)});
+addEventListener('hashchange',show);
+
+/* --- dźwięk --- */
+let ac=null,unlocked=false;
+const SILENT='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+function unlock(){if(unlocked)return;unlocked=true;
+  try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+  try{const a=new Audio(SILENT);a.setAttribute('playsinline','');a.play().catch(()=>{})}catch(e){}
+  const c=ctx();if(c){const b=c.createBuffer(1,1,22050),s=c.createBufferSource();s.buffer=b;s.connect(c.destination);s.start(0)}}
+function ctx(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(ac&&ac.state!=='running')ac.resume();return ac}
+['pointerdown','touchstart','keydown','click'].forEach(ev=>document.addEventListener(ev,unlock,{capture:true,passive:true}));
+function ding(f){const a=ctx();if(!a)return;const t=a.currentTime+0.02;[[1,0.9],[2.76,0.2],[5.4,0.08]].forEach(([m,v])=>{const o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f*m;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+0.005);g.gain.exponentialRampToValueAtTime(0.0001,t+(m===1?1.6:0.5));o.connect(g).connect(a.destination);o.start(t);o.stop(t+1.7)})}
+
+/* --- cymbałki --- */
+const FREQ=[523.25,587.33,659.25,698.46,783.99,880,987.77,1046.5];
+const COLS=['--b1','--b2','--b3','--b4','--b5','--b6','--b7','--b8'];
+const xylo=document.getElementById('xylo'),xc=document.getElementById('xcount'),xm=document.getElementById('xmsg');let xn=0;
+FREQ.forEach((f,i)=>{const b=document.createElement('button');b.className='bar';b.style.background=`var(${COLS[i]})`;b.style.height=`calc(${(24-i*1.6)}vh)`;b.setAttribute('aria-label','Sztabka '+(i+1));b.innerHTML='<span>'+(i+1)+'</span>';
+  b.onclick=()=>{ding(f);xn++;xc.textContent=xn;b.classList.add('on','hit');setTimeout(()=>b.classList.remove('hit'),120);
+    xm.textContent= xn===8?'8 DŹWiĘKÓW. TO JEST OKTAWA!':(xn===9?'9 DŹWiĘKÓW. O JEDEN WiĘCEJ NiŻ 8.':'LiCZYMY DALEJ…')};xylo.appendChild(b)});
+document.getElementById('xreset').onclick=()=>{document.getElementById('xoktbox').hidden=true;xn=0;xc.textContent=0;xm.textContent='DOTKNiJ SZTABEK OD LEWEJ.';xylo.querySelectorAll('.bar').forEach(b=>b.classList.remove('on'))};
+document.getElementById('xplay').onclick=()=>{document.getElementById('xreset').click();[...xylo.children].forEach((b,i)=>setTimeout(()=>b.click(),i*520))};
+
+/* --- ośmiornica --- */
+const svg=document.getElementById('octo'),NS='http://www.w3.org/2000/svg';let on=0;
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e}
+const BODY='#8C6BBF',ARM='#A98BD6',HIT='#F2B83A';
+const ends=[[70,250],[110,400],[230,455],[350,440],[450,440],[570,455],[690,400],[730,250]];
+const starts=[[330,250],[345,275],[365,292],[388,300],[412,300],[435,292],[455,275],[470,250]];
+const g=el('g',{});svg.appendChild(g);
+ends.forEach(([ex,ey],i)=>{const[sx,sy]=starts[i];const mx=(sx+ex)/2,my=(sy+ey)/2;const w=(i%2?1:-1)*40;
+  const d=`M${sx},${sy} C${sx+(ex-sx)*0.2+w},${sy+70} ${mx-w},${my+30} ${ex},${ey} q ${ex<400?-26:26} -6 ${ex<400?-18:18} -34`;
+  const p=el('path',{d,class:'arm','stroke-width':30,stroke:ARM,tabindex:0,role:'button','aria-label':'Ramię'});
+  const lab=el('text',{x:ex,y:ey-44,'text-anchor':'middle',class:'armlabel'});lab.textContent='';
+  const tap=()=>{if(p.dataset.n)return;on++;p.dataset.n=on;p.setAttribute('stroke',HIT);lab.textContent=on;document.getElementById('ocount').textContent=on;ding(FREQ[(on-1)%8])};
+  p.addEventListener('click',tap);p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tap()}});
+  g.appendChild(p);svg.appendChild(lab)});
+svg.appendChild(el('ellipse',{cx:400,cy:170,rx:130,ry:140,fill:BODY}));
+svg.appendChild(el('ellipse',{cx:400,cy:255,rx:95,ry:50,fill:BODY}));
+[[355,190],[445,190]].forEach(([x,y])=>{svg.appendChild(el('circle',{cx:x,cy:y,r:26,fill:'#fff'}));svg.appendChild(el('circle',{cx:x+4,cy:y+4,r:13,fill:'#14243A'}))});
+svg.appendChild(el('path',{d:'M375,240 q25,22 50,0',fill:'none',stroke:'#14243A','stroke-width':6,'stroke-linecap':'round'}));
+function say(t,lang){try{const u=new SpeechSynthesisUtterance(t);u.lang=lang;u.rate=0.8;const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.toLowerCase().startsWith(lang.slice(0,2)));if(v)u.voice=v;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+document.getElementById('oeng').onclick=()=>{document.getElementById('oengbox').hidden=false;say('octopus','en-GB')};
+document.getElementById('xokt').onclick=()=>{document.getElementById('xoktbox').hidden=false;ding(FREQ[0]);setTimeout(()=>ding(FREQ[7]),700);setTimeout(()=>{ding(FREQ[0]);ding(FREQ[7])},1500)};
+document.getElementById('oreset').onclick=()=>{document.getElementById('oengbox').hidden=true;on=0;document.getElementById('ocount').textContent=0;g.querySelectorAll('.arm').forEach(p=>{delete p.dataset.n;p.setAttribute('stroke',ARM)});svg.querySelectorAll('.armlabel').forEach(t=>t.textContent='')};
+
+/* --- pary --- */
+const kidsEl=document.getElementById('kids'),ver=document.getElementById('verdict');let kidsN=8;
+const KC=['#E2433A','#F08A24','#F2C12E','#4FA845','#2F8FD0','#2C4F9E','#7B4AA6','#C0392B','#2F7A78'];
+const HAIR=['#5A3A22','#2E2219','#C98B3E','#5A3A22','#2E2219','#8A5A2B','#2E2219','#C98B3E','#5A3A22'];
+function kidSVG(i){return `<svg class="kid" viewBox="0 0 60 92" aria-hidden="true"><path d="M14 90 V60 Q14 44 30 44 Q46 44 46 60 V90 Z" fill="${KC[i]}"/><circle cx="30" cy="24" r="16" fill="#F2D3B6"/><path d="M14 22 Q16 6 30 7 Q44 6 46 22 Q40 14 30 15 Q20 14 14 22Z" fill="${HAIR[i]}"/><circle cx="24" cy="25" r="2" fill="#2E2219"/><circle cx="36" cy="25" r="2" fill="#2E2219"/><path d="M25 32 Q30 36 35 32" stroke="#2E2219" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`}
+function drawKids(paired){kidsEl.classList.toggle('paired',paired);kidsEl.innerHTML='';
+  if(!paired){const w=document.createElement('div');w.className='row';for(let i=0;i<kidsN;i++){w.insertAdjacentHTML('beforeend',kidSVG(i))}kidsEl.appendChild(w);ver.textContent='';return}
+  for(let i=0;i<kidsN;i+=2){const p=document.createElement('div');p.className='pair '+(i+1<kidsN?'full':'solo');for(let j=i;j<Math.min(i+2,kidsN);j++){p.insertAdjacentHTML('beforeend',kidSVG(j))}kidsEl.appendChild(p)}
+  ver.innerHTML=kidsN%2===0?`<span style="color:var(--ok)">${kidsN} TO LiCZBA PARZYSTA: KAŻDY MA PARĘ.</span>`:`<span style="color:var(--warn)">${kidsN} TO LiCZBA NiEPARZYSTA: JEDNO DZiECKO BEZ PARY.</span>`}
+document.querySelectorAll('[data-kids]').forEach(b=>b.onclick=()=>{kidsN=+b.dataset.kids;drawKids(false)});
+document.getElementById('pairup').onclick=()=>drawKids(true);drawKids(false);
+
+/* --- dorysuj / skreśl --- */
+let mode='flag',fN=5,drops=[];const flags=document.getElementById('flags'),fv=document.getElementById('fverdict');
+const FLAG='<svg class="flag" viewBox="0 0 70 100"><rect x="8" y="6" width="5" height="90" rx="2" fill="#6B4A2E"/><rect x="13" y="8" width="50" height="17" fill="#fff" stroke="#999"/><rect x="13" y="25" width="50" height="17" fill="#DC143C"/></svg>';
+const DROP='<svg viewBox="0 0 58 80" width="58" height="80"><path d="M29 4 C29 4 6 38 6 54 a23 23 0 0 0 46 0 C52 38 29 4 29 4z" fill="#2F8FD0"/></svg>';
+function drawF(){flags.innerHTML='';fv.textContent='';
+  if(mode==='flag'){for(let i=0;i<fN;i++)flags.insertAdjacentHTML('beforeend',FLAG)}
+  else{drops.forEach((g,i)=>{const b=document.createElement('button');b.className='drop'+(g?' gone':'');b.innerHTML=DROP;b.setAttribute('aria-label','Kropla');b.onclick=()=>{drops[i]=!drops[i];drawF()};flags.appendChild(b)})}}
+function setMode(m){mode=m;const t=document.getElementById('ftitle');
+  if(m==='flag'){fN=5;t.textContent='DORYSUJ TYLE FLAG, ABY BYŁO iCH RAZEM 8.';fadd.hidden=false;fsub.hidden=false;fmode.textContent='KROPLE DESZCZU →'}
+  else{drops=Array(12).fill(false);t.textContent='SKREŚL TYLE KROPEL, ABY ZOSTAŁO iCH 9.';fadd.hidden=true;fsub.hidden=true;fmode.textContent='← FLAGi'}drawF()}
+const fadd=document.getElementById('fadd'),fsub=document.getElementById('fsub'),fmode=document.getElementById('fmode');
+fadd.onclick=()=>{if(fN<12){fN++;drawF()}};fsub.onclick=()=>{if(fN>0){fN--;drawF()}};
+fmode.onclick=()=>setMode(mode==='flag'?'drop':'flag');
+document.getElementById('fcheck').onclick=()=>{const n=mode==='flag'?fN:drops.filter(x=>!x).length,t=mode==='flag'?8:9;
+  fv.innerHTML=n===t?`<span style="color:var(--ok)">JEST ${n}. BRAWO, ZGADZA SiĘ!</span>`:`<span style="color:var(--warn)">JEST ${n}. ${n<t?'BRAKUJE '+(t-n):'O '+(n-t)+' ZA DUŻO'}.</span>`};
+setMode('flag');
+
+/* --- pisanie cyfr --- */
+const P8='M78,40 C76,18 42,16 40,38 C38,60 82,74 84,112 C86,148 34,150 34,114 C34,82 80,62 78,40',P9='M82,52 C80,24 38,22 38,54 C38,86 80,86 82,56 C84,104 78,140 52,160';
+[['8',P8],['9',P9]].forEach(([n,d])=>{document.getElementById('t'+n).setAttribute('d',d);document.getElementById('i'+n).setAttribute('d',d);
+  const m=d.match(/M(\d+),(\d+)/);const c=document.getElementById('d'+n);c.setAttribute('cx',m[1]);c.setAttribute('cy',m[2])});
+function playWrite(){['8','9'].forEach((n,k)=>{const p=document.getElementById('i'+n),L=p.getTotalLength();p.style.transition='none';p.style.strokeDasharray=L;p.style.strokeDashoffset=L;
+  p.getBoundingClientRect();setTimeout(()=>{p.style.transition='stroke-dashoffset 2.6s ease-in-out';p.style.strokeDashoffset=0},300+k*2900)})}
+document.getElementById('wplay').onclick=playWrite;
+
+/* --- bateria --- */
+const LV=[['PEŁNA','PiSZĘ SAMODZiELNiE.',['#4FA845','#4FA845','#4FA845']],['POŁOWA','PiSZĘ, ALE CZASEM SiĘ MYLĘ.',['#F2C12E','#F2C12E']],['NiSKA','POTRZEBUJĘ JESZCZE POMOCY.',['#E2433A']]];
+const bat=document.getElementById('bat');LV.forEach(([t,s,c])=>{const b=document.createElement('button');b.className='lvl';b.innerHTML=`<div class="cell">${c.map(x=>`<i style="background:${x}"></i>`).join('')}</div><b>${t}</b><span>${s}</span>`;
+  b.onclick=()=>{bat.querySelectorAll('.lvl').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')};bat.appendChild(b)});
+
+show();
+</script>
+
+</body></html>
