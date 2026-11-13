@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ile wody pijemy?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap">
+<style>
+/* Jeden ekran = jedna stacja lekcji, duże pola dotykowe na tablicę interaktywną */
+:root{
+  --bg:#FBFAF6; --grid:#DCE7EC; --ink:#2E2219; --soft:#6E6156; --card:#FFFFFF; --line:#D9D2C6;
+  --accent:#2F7A78; --pen:#C0392B; --ok:#3C8D4E; --warn:#C0392B; --water:#2F8FD0; --waterl:#BFDDF3;
+  --font:"Andika","Trebuchet MS",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1B1A17;--grid:#2A2D2F;--ink:#F3EDE4;--soft:#B9AE9F;--card:#25231F;--line:#3E3A33;--accent:#6CC1BD;--pen:#F07A6A;--waterl:#24435E;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1B1A17;--grid:#2A2D2F;--ink:#F3EDE4;--soft:#B9AE9F;--card:#25231F;--line:#3E3A33;--accent:#6CC1BD;--pen:#F07A6A;--waterl:#24435E;color-scheme:dark}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font-family:var(--font);margin:0;display:flex;flex-direction:column;overflow:hidden}
+nav{display:flex;align-items:center;gap:4px;background:var(--bg);padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);overflow-x:auto;flex:none}
+nav button{font:700 16px var(--font);color:var(--soft);background:none;border:none;border-bottom:4px solid transparent;padding:8px 10px;cursor:pointer;white-space:nowrap}
+nav button b{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border:2px solid currentColor;border-radius:50%;margin-right:6px;font-size:.85em}
+nav button[aria-current="true"]{color:var(--ink);border-bottom-color:var(--pen)}
+nav .sp{flex:1}
+.arrow{font-size:26px!important;color:var(--ink)!important;border:2px solid var(--ink)!important;border-radius:12px;width:56px;padding:4px 0!important}
+main{flex:1;min-height:0;position:relative}
+section{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2.2vh,24px);padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));text-align:center;overflow:auto}
+h1{font-weight:700;font-size:clamp(30px,5.6vw,80px);line-height:1.05;margin:0;text-wrap:balance}
+h2{font-weight:700;font-size:clamp(24px,3.8vw,52px);margin:0;text-wrap:balance}
+.sub{font-size:clamp(17px,2.1vw,28px);color:var(--soft);margin:0;max-width:40ch}
+.btn{font:700 clamp(17px,1.9vw,24px) var(--font);background:var(--accent);color:#fff;border:none;border-radius:8px;box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 60%,#000);padding:12px 22px;cursor:pointer;min-height:54px}
+.btn.ghost{background:var(--card);color:var(--ink);border:2px solid var(--ink);box-shadow:0 4px 0 var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:center}
+button:focus-visible{outline:4px solid var(--accent);outline-offset:3px}
+.answer{font-weight:700;font-size:clamp(22px,3vw,42px);color:var(--pen);min-height:1.3em}
+.paper{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:14px 18px}
+/* ciało i szklanki */
+.duo{display:flex;gap:clamp(20px,5vw,80px);align-items:center;justify-content:center;flex-wrap:wrap}
+#body{height:min(56vh,520px);width:auto}
+.glasses{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:620px}
+.glass{width:clamp(56px,6.5vw,86px);height:auto;cursor:pointer;background:none;border:none;padding:0}
+.glass .fill{transition:transform .5s ease;transform-origin:bottom;transform:scaleY(0)}
+.glass.full .fill{transform:scaleY(1)}
+/* wykresy */
+.chartwrap{display:flex;gap:clamp(16px,3vw,40px);align-items:flex-end;justify-content:center;flex-wrap:wrap}
+.chart{display:grid;grid-template-columns:auto 1fr;gap:0 8px;align-items:stretch}
+.yax{position:relative;width:1.6em;height:calc(var(--u) * var(--max));font-size:clamp(14px,1.5vw,20px);color:var(--soft);font-variant-numeric:tabular-nums}
+.yax span{position:absolute;right:0;transform:translateY(50%);line-height:1}
+.plot{display:flex;gap:clamp(10px,2vw,28px);align-items:flex-end;border-left:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:0 clamp(10px,2vw,24px);background:repeating-linear-gradient(to top,transparent 0,transparent calc(var(--u) - 1px),var(--line) calc(var(--u) - 1px),var(--line) var(--u))}
+.colm{display:flex;flex-direction:column-reverse;width:clamp(56px,7.5vw,110px);cursor:pointer;background:none;border:none;padding:0;height:calc(var(--u) * var(--max))}
+.blk{height:var(--u);box-sizing:border-box;border:2px solid rgba(0,0,0,.25);border-bottom:none;transition:opacity .2s}
+.blk:first-child{border-bottom:2px solid rgba(0,0,0,.25)}
+.xlab{display:flex;gap:clamp(10px,2vw,28px);padding:6px clamp(10px,2vw,24px) 0 0;grid-column:2}
+.xlab div{width:clamp(56px,7.5vw,110px);font-weight:700;font-size:clamp(13px,1.4vw,19px);line-height:1.15}
+.num{font-weight:700;font-size:clamp(20px,2.4vw,32px);color:var(--ink);min-height:1.2em}
+.qs{display:flex;flex-direction:column;gap:10px;max-width:520px;text-align:left}
+.q{display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:clamp(16px,1.8vw,24px);font-weight:700}
+.q button{flex:none}
+.q .a{color:var(--pen);min-width:3.2em;text-align:center}
+/* ankieta */
+.vote{display:flex;flex-direction:column;align-items:center;gap:6px}
+.vote .pm{display:flex;gap:6px}
+.pm button{width:52px;height:46px;font:700 26px var(--font);border-radius:8px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+/* tabela */
+table.t{border-collapse:collapse;background:var(--card);font-size:clamp(16px,1.9vw,26px)}
+.t th,.t td{border:2px solid var(--ink);padding:8px 12px;min-width:clamp(90px,11vw,170px)}
+.t th{font-weight:700}
+.t td.cups{white-space:nowrap}
+.t .s{color:var(--pen);font-weight:700;min-width:70px}
+.cup{display:inline-block;width:clamp(20px,2.2vw,30px);height:clamp(26px,2.9vw,40px);background:var(--water);clip-path:polygon(0 0,100% 0,86% 100%,14% 100%);margin:0 2px;vertical-align:middle}
+/* samoocena */
+.thumbs{display:flex;gap:clamp(14px,3vw,40px);flex-wrap:wrap;justify-content:center}
+.th{border:3px solid var(--line);border-radius:10px;background:var(--card);padding:14px 22px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--ink);font:700 clamp(16px,1.9vw,24px) var(--font);min-width:170px}
+.th svg{width:90px;height:90px}
+.th.sel{border-color:var(--accent);transform:scale(1.05)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+<nav id="nav" aria-label="Stacje lekcji"></nav>
+<main>
+<section id="start">
+  <p class="sub">MATEMATYKA · OSZCZĘDZAMY WODĘ</p>
+  <h1>iLE WODY PiJEMY?</h1>
+  <p class="sub">ODCZYTAM DANE Z WYKRESU i Z TABELi ORAZ BĘDĘ WSPÓŁPRACOWAĆ W ZESPOLE.</p>
+  <button class="btn" data-go="cialo">ZACZYNAMY →</button>
+</section>
+
+<section id="cialo" hidden>
+  <h2>CO JEST GŁÓWNYM SKŁADNiKiEM CiAŁA CZŁOWiEKA?</h2>
+  <div class="duo">
+    <svg id="body" viewBox="0 0 120 260" aria-label="Sylwetka człowieka wypełniająca się wodą">
+      <defs><clipPath id="bclip"><circle cx="60" cy="30" r="24"/><rect x="28" y="58" width="64" height="104" rx="22"/><rect x="8" y="64" width="18" height="86" rx="9"/><rect x="94" y="64" width="18" height="86" rx="9"/><rect x="32" y="150" width="24" height="104" rx="11"/><rect x="64" y="150" width="24" height="104" rx="11"/></clipPath></defs>
+      <g clip-path="url(#bclip)"><rect x="0" y="0" width="120" height="260" fill="var(--line)"/><rect id="bwater" x="0" y="260" width="120" height="260" fill="var(--water)"/></g>
+    </svg>
+    <div style="display:flex;flex-direction:column;gap:14px;align-items:center">
+      <button class="btn" id="bfill">SPRAWDŹ</button>
+      <div class="answer" id="bans"></div>
+    </div>
+  </div>
+</section>
+
+<section id="szklanki" hidden>
+  <h2>iLE SZKLANEK WODY DZiENNiE?</h2>
+  <p class="sub">DZiECi W NASZYM WiEKU POWiNNY WYPiJAĆ PRZYNAJMNiEJ 5 SZKLANEK WODY DZiENNiE. DOTKNiJ SZKLANKi, ABY JĄ NAPEŁNiĆ.</p>
+  <div class="glasses" id="glasses"></div>
+  <div class="answer" id="gans"></div>
+  <button class="btn ghost" id="greset">OD NOWA</button>
+</section>
+
+<section id="nasza" hidden>
+  <h2>CO PiJEMY W NASZEJ KLASiE?</h2>
+  <div class="chartwrap">
+    <div class="chart" id="ourChart"></div>
+  </div>
+  <div class="row" id="ourVotes"></div>
+  <div class="row">
+    <button class="btn" id="ourTop">NAJPOPULARNiEJSZY NAPÓJ</button>
+    <button class="btn ghost" id="ourReset">OD NOWA</button>
+  </div>
+  <div class="answer" id="ourAns"></div>
+</section>
+
+<section id="klasa1a" hidden>
+  <h2>CO PiJĄ UCZNiOWiE KLASY 1A?</h2>
+  <div class="chartwrap">
+    <div class="chart" id="aChart"></div>
+    <div class="qs paper">
+      <div class="q"><span>iLE OSÓB PiJE SOKi?</span><button class="btn ghost" data-reveal="q1">POKAŻ</button><span class="a" id="q1"></span></div>
+      <div class="q"><span>iLE OSÓB PiJE WODĘ?</span><button class="btn ghost" data-reveal="q2">POKAŻ</button><span class="a" id="q2"></span></div>
+      <div class="q"><span>NAJPOPULARNiEJSZY NAPÓJ?</span><button class="btn ghost" data-reveal="q3">POKAŻ</button><span class="a" id="q3"></span></div>
+      <div class="q"><span>NAJMNiEJ OSÓB?</span><button class="btn ghost" data-reveal="q4">POKAŻ</button><span class="a" id="q4"></span></div>
+    </div>
+  </div>
+  <p class="sub">DOTKNiJ SŁUPKA, ABY ZOBACZYĆ LiCZBĘ OSÓB.</p>
+</section>
+
+<section id="antek" hidden>
+  <h2>iLE SZKLANEK WYPiŁ ANTEK?</h2>
+  <div class="chartwrap">
+    <div class="paper" id="antekCups" style="text-align:left;display:flex;flex-direction:column;gap:10px"></div>
+    <div class="chart" id="antChart"></div>
+  </div>
+  <p class="sub">DOTYKAJ SŁUPKA, ABY DOŁOŻYĆ KRATKĘ. TYLE KRATEK, iLE SZKLANEK.</p>
+  <div class="row">
+    <button class="btn" id="antCheck">SPRAWDŹ</button>
+    <button class="btn ghost" id="antMore">O iLE WiĘCEJ W PiĄTEK NiŻ W ŚRODĘ?</button>
+    <button class="btn ghost" id="antReset">OD NOWA</button>
+  </div>
+  <div class="answer" id="antAns"></div>
+</section>
+
+<section id="tabela" hidden>
+  <h2>TOMEK i WiOLA</h2>
+  <table class="t" aria-label="Tabela: ile szklanek wody wypili Tomek i Wiola">
+    <tr><th></th><th>PONiEDZiAŁEK</th><th>WTOREK</th><th>ŚRODA</th><th class="s" id="sumHead" style="visibility:hidden">RAZEM</th></tr>
+    <tr><th>TOMEK</th><td class="cups" data-n="1"></td><td class="cups" data-n="3"></td><td class="cups" data-n="4"></td><td class="s" id="sT"></td></tr>
+    <tr><th>WiOLA</th><td class="cups" data-n="3"></td><td class="cups" data-n="1"></td><td class="cups" data-n="3"></td><td class="s" id="sW"></td></tr>
+  </table>
+  <div class="qs paper">
+    <div class="q"><span>WiOLA PRZEZ TRZY DNi WYPiŁA … SZKLANEK.</span><button class="btn ghost" data-reveal="t1">POKAŻ</button><span class="a" id="t1"></span></div>
+    <div class="q"><span>W PONiEDZiAŁEK DZiECi WYPiŁY … SZKLANKi.</span><button class="btn ghost" data-reveal="t2">POKAŻ</button><span class="a" id="t2"></span></div>
+    <div class="q"><span>KTO WYPiŁ MNiEJ PRZEZ TRZY DNi?</span><button class="btn ghost" data-reveal="t3">POKAŻ</button><span class="a" id="t3"></span></div>
+  </div>
+</section>
+
+<section id="ocena" hidden>
+  <h2>CZY POTRAFiĘ ODCZYTAĆ WYKRES SŁUPKOWY?</h2>
+  <div class="thumbs" id="thumbs"></div>
+</section>
+</main>
+
+<script>
+const SECTIONS=[["start","START"],["cialo","CiAŁO"],["szklanki","5 SZKLANEK"],["nasza","NASZA KLASA"],["klasa1a","KLASA 1A"],["antek","ANTEK"],["tabela","TABELA"],["ocena","KCiUK"]];
+const nav=document.getElementById('nav');
+SECTIONS.forEach(([id,l],i)=>{const b=document.createElement('button');b.innerHTML=(i?'<b>'+i+'</b>':'')+l;b.dataset.go=id;nav.appendChild(b)});
+const sp=document.createElement('div');sp.className='sp';
+const prev=document.createElement('button');prev.className='arrow';prev.textContent='←';prev.setAttribute('aria-label','Poprzedni');
+const next=document.createElement('button');next.className='arrow';next.textContent='→';next.setAttribute('aria-label','Następny');
+nav.append(sp,prev,next);
+function cur(){const h=location.hash.slice(1);return SECTIONS.some(s=>s[0]===h)?h:'start'}
+function show(){const c=cur();SECTIONS.forEach(([id])=>{document.getElementById(id).hidden=id!==c});nav.querySelectorAll('[data-go]').forEach(b=>b.setAttribute('aria-current',b.dataset.go===c))}
+function go(id){location.hash=id}
+function step(d){const i=SECTIONS.findIndex(s=>s[0]===cur());go(SECTIONS[Math.max(0,Math.min(SECTIONS.length-1,i+d))][0])}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
+prev.onclick=()=>step(-1);next.onclick=()=>step(1);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')step(1);if(e.key==='ArrowLeft'||e.key==='PageUp')step(-1)});
+addEventListener('hashchange',show);
+
+/* dźwięk kropli */
+let ac=null,unlocked=false;
+function ctx(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(ac&&ac.state!=='running')ac.resume();return ac}
+function unlock(){if(unlocked)return;unlocked=true;try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}ctx()}
+['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,unlock,{capture:true,passive:true}));
+function plop(k=0){const a=ctx();if(!a)return;const t=a.currentTime+0.02,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(600+k*60,t);o.frequency.exponentialRampToValueAtTime(1300+k*80,t+0.09);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.6,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+0.18);o.connect(g).connect(a.destination);o.start(t);o.stop(t+0.2)}
+
+/* ciało */
+document.getElementById('bfill').onclick=()=>{const w=document.getElementById('bwater');let y=260;const target=95;const id=setInterval(()=>{y-=4;w.setAttribute('y',y);if(y<=target){clearInterval(id);document.getElementById('bans').textContent='CiAŁO CZŁOWiEKA SKŁADA SiĘ GŁÓWNiE Z WODY.'}},16);plop(2)};
+
+/* 5 szklanek */
+const GL=`<svg viewBox="0 0 60 80"><defs><clipPath id="gc{i}"><path d="M6 6 H54 L48 74 H12 Z"/></clipPath></defs><g clip-path="url(#gc{i})"><rect class="fill" x="0" y="14" width="60" height="66" fill="var(--water)"/></g><path d="M6 6 H54 L48 74 H12 Z" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/></svg>`;
+const glEl=document.getElementById('glasses'),gans=document.getElementById('gans');
+function drawGlasses(){glEl.innerHTML='';for(let i=0;i<5;i++){const b=document.createElement('button');b.className='glass';b.setAttribute('aria-label','Szklanka '+(i+1));b.innerHTML=GL.replaceAll('{i}',i);b.onclick=()=>{if(b.classList.contains('full'))return;b.classList.add('full');plop(i);const n=glEl.querySelectorAll('.full').length;gans.textContent=n<5?n+(n===1?' SZKLANKA':' SZKLANKi'):'5 SZKLANEK. BRAWO!'};glEl.appendChild(b)}gans.textContent=''}
+drawGlasses();document.getElementById('greset').onclick=drawGlasses;
+
+/* rysowanie wykresu słupkowego */
+function buildChart(el,cats,max,unitPx,onCol){el.innerHTML='';el.style.setProperty('--u',unitPx);el.style.setProperty('--max',max);
+  const y=document.createElement('div');y.className='yax';y.style.setProperty('--u',unitPx);y.style.setProperty('--max',max);for(let i=0;i<=max;i++){const s=document.createElement('span');s.textContent=i;s.style.bottom=`calc(${unitPx} * ${i})`;y.appendChild(s)}
+  const p=document.createElement('div');p.className='plot';p.style.setProperty('--u',unitPx);
+  const xl=document.createElement('div');xl.className='xlab';
+  const cols=cats.map((c,i)=>{const b=document.createElement('button');b.className='colm';b.style.setProperty('--max',max);b.style.setProperty('--u',unitPx);b.setAttribute('aria-label',c.name);
+    b.onclick=()=>onCol&&onCol(i,b);p.appendChild(b);const l=document.createElement('div');l.innerHTML=c.name;xl.appendChild(l);return b});
+  el.append(y,p,document.createElement('div'),xl);return cols}
+function setCol(b,n,color){b.innerHTML='';for(let i=0;i<n;i++){const k=document.createElement('div');k.className='blk';k.style.background=color;b.appendChild(k)}}
+
+/* nasza klasa: ankieta na żywo */
+const OUR=[{name:'WODA',c:'#2F8FD0'},{name:'NAPÓJ<br>GAZOWANY',c:'#F08A24'},{name:'SOK',c:'#F2C12E'},{name:'HERBATA',c:'#2C4F9E'},{name:'iNNE',c:'#4FA845'}];
+let ours=OUR.map(()=>0);const U1='clamp(18px,3.2vh,34px)';
+const ourCols=buildChart(document.getElementById('ourChart'),OUR,12,U1,(i)=>{change(i,1)});
+const votes=document.getElementById('ourVotes');
+OUR.forEach((c,i)=>{const v=document.createElement('div');v.className='vote';v.innerHTML=`<div class="num" id="on${i}">0</div><div class="pm"><button aria-label="Odejmij">−</button><button aria-label="Dodaj">+</button></div>`;v.querySelectorAll('button')[0].onclick=()=>change(i,-1);v.querySelectorAll('button')[1].onclick=()=>change(i,1);votes.appendChild(v)});
+function change(i,d){ours[i]=Math.max(0,Math.min(12,ours[i]+d));setCol(ourCols[i],ours[i],OUR[i].c);document.getElementById('on'+i).textContent=ours[i];if(d>0)plop(ours[i]%6);document.getElementById('ourAns').textContent=''}
+document.getElementById('ourReset').onclick=()=>{ours=ours.map(()=>0);ours.forEach((_,i)=>change(i,0))};
+document.getElementById('ourTop').onclick=()=>{const m=Math.max(...ours);const a=document.getElementById('ourAns');if(!m){a.textContent='NAJPiERW ZAGŁOSUJCiE.';return}const w=OUR.filter((_,i)=>ours[i]===m).map(c=>c.name.replace('<br>',' '));a.textContent=(w.length>1?'REMiS: '+w.join(' i '):w[0])+' ('+m+')'};
+
+/* klasa 1a (P.M. s. 47) */
+const A=[{name:'WODA',c:'#7FB3E0',n:7},{name:'NAPÓJ<br>GAZOWANY',c:'#E39A3B',n:4},{name:'SOK',c:'#F2D23A',n:6},{name:'HERBATA',c:'#3C4F9A',n:6}];
+const aCols=buildChart(document.getElementById('aChart'),A,10,'clamp(18px,3.4vh,36px)',(i,b)=>{const t=b.querySelector('.tag');if(t){t.remove();return}const s=document.createElement('div');s.className='tag';s.textContent=A[i].n;s.style.cssText='font-weight:700;font-size:clamp(20px,2.4vw,32px);color:var(--pen);order:99;margin-bottom:4px';b.appendChild(s);plop(i)});
+A.forEach((c,i)=>setCol(aCols[i],c.n,c.c));
+const REV={q1:'6',q2:'7',q3:'WODA',q4:'NAPÓJ GAZOWANY',t1:'7',t2:'4',t3:'WiOLA'};
+document.querySelectorAll('[data-reveal]').forEach(b=>b.onclick=()=>{const id=b.dataset.reveal;const el=document.getElementById(id);el.textContent=el.textContent?'':REV[id];if(id==='t1'||id==='t3'){document.getElementById('sumHead').style.visibility='visible';document.getElementById('sT').textContent='8';document.getElementById('sW').textContent='7'}});
+
+/* Antek (Ć.M. s. 57, zad. 1) */
+const ANT=[{name:'PONiEDZiAŁEK',n:6},{name:'ŚRODA',n:5},{name:'PiĄTEK',n:7}];let ant=[0,0,0];
+const ac2=document.getElementById('antekCups');ANT.forEach(d=>{const r=document.createElement('div');r.style.cssText='font-weight:700;font-size:clamp(16px,1.8vw,24px)';r.innerHTML=d.name+'<br>'+'<span class="cup"></span>'.repeat(d.n);ac2.appendChild(r)});
+const antCols=buildChart(document.getElementById('antChart'),ANT.map(d=>({name:d.name})),7,'clamp(22px,4vh,42px)',(i)=>{ant[i]=ant[i]>=7?0:ant[i]+1;setCol(antCols[i],ant[i],'#2F8FD0');plop(ant[i]);document.getElementById('antAns').textContent=''});
+document.getElementById('antReset').onclick=()=>{ant=[0,0,0];antCols.forEach(c=>setCol(c,0));document.getElementById('antAns').textContent=''};
+document.getElementById('antCheck').onclick=()=>{const bad=ANT.map((d,i)=>ant[i]===d.n?null:d.name).filter(Boolean);document.getElementById('antAns').innerHTML=bad.length?`<span style="color:var(--warn)">SPRAWDŹ: ${bad.join(', ')}</span>`:`<span style="color:var(--ok)">ZGADZA SiĘ! NAJWiĘCEJ: PiĄTEK (UŚMiECH), NAJMNiEJ: ŚRODA (GWiAZDKA)</span>`};
+document.getElementById('antMore').onclick=()=>{document.getElementById('antAns').textContent='ANTEK WYPiŁ W PiĄTEK O 2 SZKLANKi WODY WiĘCEJ NiŻ W ŚRODĘ. (7 − 5 = 2)'};
+
+/* tabela */
+document.querySelectorAll('td.cups').forEach(td=>{td.innerHTML='<span class="cup"></span>'.repeat(+td.dataset.n)});
+
+/* kciuk */
+const TH=[['W GÓRĘ','ODCZYTUJĘ SAMODZiELNiE.',0],['NA BOK','JESZCZE SiĘ MYLĘ.',90],['W DÓŁ','POTRZEBUJĘ POMOCY.',180]];
+const thumbs=document.getElementById('thumbs');
+TH.forEach(([t,s,r])=>{const b=document.createElement('button');b.className='th';b.innerHTML=`<svg viewBox="0 0 100 100"><g transform="rotate(${r} 50 50)"><path d="M30 46 h-10 v40 h10 z M34 46 l14-30 c8 0 10 6 9 12 l-3 12 h22 c6 0 9 5 8 10 l-6 28 c-1 5-5 8-10 8 H34 z" fill="var(--accent)"/></g></svg><b>${t}</b><span>${s}</span>`;b.onclick=()=>{thumbs.querySelectorAll('.th').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')};thumbs.appendChild(b)});
+
+show();
+</script>
+</body></html>
