@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Dla Wiktorii ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#FBF6F0; --card:#FFFFFF; --ink:#3A2E2A; --soft:#7D6E66; --line:#EADFD4;
+  --sage:#8BA888; --sageL:#E3EDE1; --peach:#E8A27C; --peachL:#FBE6DA; --rose:#D98C8C; --sky:#9BBBD4; --skyL:#E2EDF5;
+  --head:"Fraunces",Georgia,serif; --font:"Nunito",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#1E1A18; --card:#2A2523; --ink:#F4ECE6; --soft:#BBAAA0; --line:#3F3632;
+  --sageL:#2E3A2D; --peachL:#4A3328; --skyL:#283642; color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--head);font-weight:700;line-height:1.15;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+
+/* nawigacja */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 14px;max-width:980px;margin:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:none;text-decoration:none;color:var(--soft);font-weight:700;font-size:15px;padding:8px 14px;border-radius:999px;white-space:nowrap;transition:.15s}
+.tabs a.on{background:var(--ink);color:var(--bg)}
+main{max-width:980px;margin:auto;padding:22px 16px 80px}
+section{display:none;animation:fade .25s ease}
+section.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.lead{color:var(--soft);margin:8px 0 22px;max-width:60ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.note{font-size:14px;color:var(--soft);margin-top:18px}
+
+/* start */
+.hero{background:linear-gradient(135deg,var(--peachL),var(--sageL));border-radius:26px;padding:34px 24px;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(34px,7vw,54px)}
+.hero p{max-width:46ch;color:var(--soft);margin:12px 0 0}
+.hero svg{position:absolute;right:-30px;top:-30px;width:150px;opacity:.35}
+.hero>*:not(svg){position:relative}
+.due{margin-top:22px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.due input{padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card)}
+.due .out{font-weight:800}
+.tiles{margin-top:18px;display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.tile{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;transition:.15s}
+.tile:hover{transform:translateY(-2px);border-color:var(--sage)}
+.tile b{display:block;font-family:var(--head);font-size:19px;margin:6px 0 2px}
+.tile span{font-size:14px;color:var(--soft)}
+.tile .ic{font-size:26px}
+.tile .bar{margin-top:10px}
+
+/* listy */
+.bar{height:8px;border-radius:9px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--sage);width:0;transition:width .3s}
+.progress{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.progress .bar{flex:1}
+.progress b{font-size:14px;min-width:70px;text-align:right}
+.cat{margin-bottom:14px}
+.cat h3{font-size:19px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:baseline}
+.cat h3 small{font-family:var(--font);font-size:13px;color:var(--soft);font-weight:600}
+.item{display:flex;gap:12px;align-items:flex-start;padding:9px 4px;border-top:1px dashed var(--line)}
+.item:first-of-type{border-top:0}
+.item input{appearance:none;flex:none;width:24px;height:24px;border:2px solid var(--sage);border-radius:7px;margin:1px 0 0;display:grid;place-content:center;cursor:pointer}
+.item input:checked{background:var(--sage)}
+.item input:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.item label{flex:1;cursor:pointer}
+.item label em{font-style:normal;color:var(--soft);font-size:14px}
+.item.done label{text-decoration:line-through;color:var(--soft)}
+.item .x{border:0;background:none;color:var(--soft);font-size:18px;padding:0 4px}
+.add{display:flex;gap:8px;margin-top:10px}
+.add input{flex:1;min-width:0;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg)}
+.btn{border:0;border-radius:12px;padding:9px 14px;background:var(--ink);color:var(--bg);font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 11px;font-size:14px}
+
+/* metody */
+.method{border-left:5px solid var(--c,var(--sage))}
+.method h3{font-size:21px;margin-bottom:4px}
+.method .tag{font-size:13px;color:var(--soft);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.method p{margin:10px 0}
+.method ul{margin:6px 0 0;padding-left:20px}
+.method li{margin:3px 0}
+.method .read{font-size:14px;color:var(--soft);margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+
+/* zabawy */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-weight:700;font-size:15px}
+.chip.on{background:var(--peach);border-color:var(--peach);color:#fff}
+.play h3{font-size:19px;margin:4px 0 6px}
+.play .age{font-size:13px;font-weight:800;color:var(--peach)}
+.play p{margin:0;color:var(--soft);font-size:15.5px}
+.play .em{font-size:30px}
+.fav{float:right;border:0;background:none;font-size:22px;line-height:1;color:var(--line)}
+.fav.on{color:var(--rose)}
+
+/* pokój */
+.planner{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+.planner>*{min-width:0}
+@media (min-width:820px){.planner{grid-template-columns:minmax(0,1fr) 270px}}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.room{position:relative;margin:auto;border:6px solid var(--wall,#C9B8A8);border-radius:4px;background-color:var(--floor,#EAD9C3);
+  background-image:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px);touch-action:none;user-select:none;-webkit-user-select:none}
+.dims{display:flex;justify-content:space-between;font-size:13px;color:var(--soft);margin-top:8px}
+.fur{position:absolute;border-radius:6px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px;font-weight:800;color:rgba(40,30,25,.8);
+  box-shadow:0 1px 0 rgba(0,0,0,.15),inset 0 0 0 1.5px rgba(0,0,0,.18);cursor:grab;overflow:hidden;line-height:1.1;padding:2px;touch-action:none}
+.fur.sel{outline:3px solid var(--ink);outline-offset:2px;z-index:5}
+.fur.round{border-radius:50%}
+.fur.rug{opacity:.75;z-index:0}
+.fur.door{background:transparent!important;box-shadow:none;border-top:4px solid #8a6b52;border-radius:0 0 100% 0;border-right:1px dashed #8a6b52;border-bottom:1px dashed #8a6b52}
+.fur.win{background:#bfdcf0!important;box-shadow:none;border:2px solid #7aa7c7;border-radius:2px}
+.side .card{margin-bottom:12px}
+.side h3{font-size:17px;margin-bottom:10px}
+.catalog{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.catalog button{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 6px;font-size:13.5px;font-weight:700;text-align:left}
+.catalog button:hover{border-color:var(--sage)}
+.row{display:flex;gap:8px;align-items:center;margin:8px 0;font-size:14px}
+.row label{flex:1;color:var(--soft);font-weight:700}
+.row input[type=number]{width:84px;padding:6px 8px;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+.row input[type=color]{width:44px;height:32px;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--bg)}
+.swatches{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.swatches button{width:28px;height:28px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line)}
+.selbox[hidden]{display:none}
+.selbox .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+
+/* notatki */
+textarea{width:100%;min-height:260px;border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--card);resize:vertical;line-height:1.6}
+.saved{font-size:13px;color:var(--sage);font-weight:700;height:18px;margin-top:6px}
+.prompts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<header><nav class="tabs" id="tabs">
+  <a href="#start">Start</a>
+  <a href="#wyprawka">Wyprawka</a>
+  <a href="#szpital">Torba do szpitala</a>
+  <a href="#metody">Metody wychowawcze</a>
+  <a href="#zabawy">Zabawy</a>
+  <a href="#pokoj">Pokój</a>
+  <a href="#notatki">Notatki</a>
+</nav></header>
+
+<main>
+
+<!-- START -->
+<section id="start">
+  <div class="hero">
+    <h1>Dla Wiktorii ♡</h1>
+    <p>Jedno miejsce na wszystko, co trzeba przygotować, przeczytać i zaplanować przed przyjściem maluszka na świat.</p>
+    <div class="due">
+      <label for="dueDate"><b>Termin porodu:</b></label>
+      <input type="date" id="dueDate">
+      <span class="out" id="dueOut"></span>
+    </div>
+    <svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="90" fill="#E8A27C"/><circle cx="100" cy="92" r="40" fill="#FBE6DA"/><circle cx="86" cy="88" r="4" fill="#3A2E2A"/><circle cx="114" cy="88" r="4" fill="#3A2E2A"/><path d="M88 104q12 10 24 0" stroke="#3A2E2A" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="76" cy="100" r="6" fill="#D98C8C" opacity=".6"/><circle cx="124" cy="100" r="6" fill="#D98C8C" opacity=".6"/></svg>
+  </div>
+  <div class="tiles">
+    <a class="tile" href="#wyprawka"><span class="ic">🧺</span><b>Wyprawka</b><span>dla dziecka</span><div class="bar"><i id="p-wyprawka"></i></div></a>
+    <a class="tile" href="#szpital"><span class="ic">👜</span><b>Torba do szpitala</b><span>dla Ciebie i maluszka</span><div class="bar"><i id="p-szpital"></i></div></a>
+    <a class="tile" href="#metody"><span class="ic">🌱</span><b>Metody</b><span>wychowawcze w pigułce</span></a>
+    <a class="tile" href="#zabawy"><span class="ic">🧸</span><b>Zabawy</b><span>od pierwszych tygodni do 2 lat</span></a>
+    <a class="tile" href="#pokoj"><span class="ic">🛏️</span><b>Pokój</b><span>przesuwaj meble na planie</span></a>
+    <a class="tile" href="#notatki"><span class="ic">📝</span><b>Notatki</b><span>pytania, pomysły, zakupy</span></a>
+  </div>
+  <p class="note">Wszystko, co zaznaczysz i zapiszesz, zostaje w tej przeglądarce na tym urządzeniu.</p>
+</section>
+
+<!-- WYPRAWKA -->
+<section id="wyprawka">
+  <h2>Wyprawka dla dziecka</h2>
+  <p class="lead">Podstawy na pierwsze tygodnie. Ilości są orientacyjne – lepiej dokupić niż kupić za dużo, bo maluchy szybko rosną. Możesz dopisywać własne rzeczy i usuwać zbędne.</p>
+  <div class="progress"><div class="bar"><i class="pb"></i></div><b class="pt"></b></div>
+  <div class="grid lists" data-list="wyprawka"></div>
+</section>
+
+<!-- SZPITAL -->
+<section id="szpital">
+  <h2>Torba do szpitala</h2>
+  <p class="lead">Dobrze mieć ją spakowaną kilka tygodni przed terminem. Każdy szpital ma też własną listę – warto ją sprawdzić na jego stronie i dopisać tu, czego brakuje.</p>
+  <div class="progress"><div class="bar"><i class="pb"></i></div><b class="pt"></b></div>
+  <div class="grid lists" data-list="szpital"></div>
+</section>
+
+<!-- METODY -->
+<section id="metody">
+  <h2>Metody wychowawcze w pigułce</h2>
+  <p class="lead">Krótki przegląd podejść, o których najczęściej się słyszy. Nie trzeba wybierać jednego – większość z nich dobrze się uzupełnia.</p>
+  <div class="grid" id="methods"></div>
+</section>
+
+<!-- ZABAWY -->
+<section id="zabawy">
+  <h2>Propozycje zabaw</h2>
+  <p class="lead">Proste pomysły dopasowane do wieku. Serduszkiem możesz oznaczyć ulubione. Małe przedmioty zawsze tylko pod okiem dorosłego.</p>
+  <div class="chips" id="ages"></div>
+  <div class="grid" id="plays"></div>
+</section>
+
+<!-- POKÓJ -->
+<section id="pokoj">
+  <h2>Wizualizacja pokoju</h2>
+  <p class="lead">Wpisz wymiary pokoju, dodaj meble z listy i przesuwaj je palcem lub myszką. Kratka to 50 cm. Plan zapisuje się automatycznie.</p>
+  <div class="planner">
+    <div class="stage">
+      <div class="room" id="room"></div>
+      <div class="dims"><span id="dimW"></span><span id="dimH"></span></div>
+    </div>
+    <div class="side">
+      <div class="card selbox" id="selbox" hidden>
+        <h3 id="selName">Mebel</h3>
+        <div class="row"><label>Szer. (cm)</label><input type="number" id="selW" min="10" step="5"></div>
+        <div class="row"><label>Głęb. (cm)</label><input type="number" id="selH" min="10" step="5"></div>
+        <div class="row"><label>Kolor</label><input type="color" id="selC"></div>
+        <div class="acts">
+          <button class="btn sm" id="rot">↻ Obróć</button>
+          <button class="btn sm ghost" id="dup">Duplikuj</button>
+          <button class="btn sm ghost" id="del">Usuń</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Dodaj</h3>
+        <div class="catalog" id="catalog"></div>
+      </div>
+      <div class="card">
+        <h3>Pokój</h3>
+        <div class="row"><label>Szerokość (cm)</label><input type="number" id="roomW" min="150" max="800" step="10"></div>
+        <div class="row"><label>Długość (cm)</label><input type="number" id="roomH" min="150" max="800" step="10"></div>
+        <div class="row"><label>Ściany</label></div>
+        <div class="swatches" id="wallSw"></div>
+        <div class="row"><label>Podłoga</label></div>
+        <div class="swatches" id="floorSw"></div>
+        <div class="row" style="margin-top:14px"><button class="btn sm ghost" id="resetRoom">Zacznij od nowa</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTATKI -->
+<section id="notatki">
+  <h2>Notatki</h2>
+  <p class="lead">Na pytania do lekarza lub położnej, imiona, pomysły, rzeczy do kupienia – wszystko w jednym miejscu.</p>
+  <div class="prompts">
+    <button class="btn sm ghost" data-p="Pytania do położnej:">+ Pytania do położnej</button>
+    <button class="btn sm ghost" data-p="Imiona, które nam się podobają:">+ Imiona</button>
+    <button class="btn sm ghost" data-p="Do kupienia:">+ Do kupienia</button>
+    <button class="btn sm ghost" data-p="Ważne telefony:">+ Ważne telefony</button>
+  </div>
+  <textarea id="notes" placeholder="Zacznij pisać…"></textarea>
+  <div class="saved" id="saved"></div>
+</section>
+
+</main>
+
+<script>
+/* ---------- pamięć ---------- */
+const KEY='wiktoria-v1';
+let S={};
+try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- nawigacja ---------- */
+function route(){
+  const id=(location.hash||'#start').slice(1);
+  const sec=document.getElementById(id)?id:'start';
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===sec));
+  document.querySelectorAll('#tabs a').forEach(a=>{const on=a.getAttribute('href')==='#'+sec;a.classList.toggle('on',on);if(on)a.scrollIntoView({inline:'center',block:'nearest'})});
+  window.scrollTo(0,0);
+  if(sec==='pokoj')drawRoom();
+}
+addEventListener('hashchange',route);
+
+/* ---------- termin ---------- */
+const due=$('#dueDate');
+function showDue(){
+  if(!S.due){$('#dueOut').textContent='';return}
+  due.value=S.due;
+  const d=new Date(S.due+'T12:00'),now=new Date();now.setHours(12,0,0,0);
+  const left=Math.round((d-now)/864e5);
+  const wk=Math.floor((280-left)/7),dy=(280-left)%7;
+  let t;
+  if(left>0) t=`zostało ${left} ${left===1?'dzień':'dni'} · ${wk} tc ${dy} d`;
+  else if(left===0) t='to dziś! ♡';
+  else t=`maluszek ma już ${-left} ${left===-1?'dzień':'dni'} ♡`;
+  $('#dueOut').textContent=t;
+}
+due.addEventListener('change',()=>{S.due=due.value;save();showDue()});
+
+/* ---------- listy ---------- */
+const LISTS={
+ wyprawka:[
+  ['Ubranka (rozm. 56–62)',['Body z długim rękawem|6–8 szt.','Body z krótkim rękawem|4–6 szt.','Pajacyki|5–6 szt.','Półśpiochy / spodenki|4 szt.','Cienkie czapeczki|2–3 szt.','Skarpetki|4–6 par','Niedrapki|2 pary','Sweterek lub bluza rozpinana|2 szt.','Kombinezon / ubranie na spacer|zależnie od pory roku']],
+  ['Spanie',['Łóżeczko lub kołyska','Twardy materac dopasowany do łóżeczka','Prześcieradła z gumką|3 szt.','Śpiworek do spania|2 szt.','Kocyk na spacery','Niania elektroniczna|opcjonalnie']],
+  ['Przewijanie i kąpiel',['Pieluszki jednorazowe|rozm. 1–2','Chusteczki nawilżane lub waciki','Krem na odparzenia','Przewijak lub mata','Wanienka','Termometr do wody','Ręczniki z kapturkiem|2 szt.','Delikatny płyn do kąpieli','Nożyczki lub cążki do paznokci','Pieluszki tetrowe / muślinowe|6–10 szt.']],
+  ['Karmienie',['Butelki|2–3 szt., przydają się też przy karmieniu piersią','Poduszka do karmienia','Wkładki laktacyjne','Śliniaczki','Laktator|opcjonalnie','Sterylizator / podgrzewacz|opcjonalnie']],
+  ['Spacer i auto',['Wózek z gondolą','Fotelik samochodowy 0–13 kg|potrzebny już przy wyjściu ze szpitala','Folia przeciwdeszczowa i moskitiera','Torba do wózka','Chusta lub nosidło|opcjonalnie']],
+  ['Pielęgnacja i zdrowie',['Termometr dla dziecka','Aspirator do nosa','Sól fizjologiczna w ampułkach','Gaziki jałowe','Szczotka do włosków','Apteczka|po konsultacji z pediatrą']]
+ ],
+ szpital:[
+  ['Dokumenty',['Dowód osobisty','Karta przebiegu ciąży','Wyniki badań (w tym grupa krwi)','Skierowanie do szpitala|jeśli jest','Plan porodu|jeśli masz']],
+  ['Dla mamy',['Koszule nocne rozpinane z przodu|2–3 szt.','Szlafrok','Kapcie i klapki pod prysznic','Majtki poporodowe / siateczkowe','Podpaski poporodowe','Biustonosze do karmienia|2 szt.','Wkładki laktacyjne','Ręczniki|2 szt.','Kosmetyczka','Gumki do włosów','Pomadka do ust','Ładowarka z długim kablem','Woda niegazowana','Przekąski','Wygodne ubranie na wyjście']],
+  ['Dla maluszka',['Body|2–3 szt.','Pajacyki|2–3 szt.','Czapeczka','Skarpetki','Pieluszki rozm. 1','Waciki / chusteczki','Kocyk lub rożek','Ubranko na wyjście','Fotelik samochodowy|na drogę do domu']],
+  ['Dla osoby towarzyszącej',['Przekąski i picie','Ładowarka / powerbank','Zmiana ubrania','Drobne na parking i automat']]
+ ]
+};
+function listState(name){S.lists=S.lists||{};return S.lists[name]=S.lists[name]||{done:{},removed:{},extra:{}}}
+function renderList(name){
+  const box=document.querySelector(`.lists[data-list="${name}"]`),st=listState(name);
+  let total=0,done=0;
+  box.innerHTML=LISTS[name].map(([cat,items],ci)=>{
+    const all=items.map((t,i)=>({id:ci+'-'+i,t})).filter(o=>!st.removed[o.id]).concat((st.extra[ci]||[]).map((t,i)=>({id:ci+'-x'+i,t,extra:i})));
+    const d=all.filter(o=>st.done[o.id]).length;total+=all.length;done+=d;
+    return `<div class="card cat"><h3>${esc(cat)}<small>${d}/${all.length}</small></h3>${all.map(o=>{
+      const [a,b]=o.t.split('|');const cid=name+o.id;
+      return `<div class="item${st.done[o.id]?' done':''}"><input type="checkbox" id="${cid}" data-id="${o.id}" ${st.done[o.id]?'checked':''}><label for="${cid}">${esc(a)}${b?` <em>· ${esc(b)}</em>`:''}</label><button class="x" title="Usuń" data-rm="${o.id}" data-ci="${ci}" ${o.extra!==undefined?`data-ex="${o.extra}"`:''}>×</button></div>`}).join('')}
+      <form class="add" data-ci="${ci}"><input placeholder="Dopisz coś…" aria-label="Dopisz do: ${esc(cat)}"><button class="btn sm">+</button></form></div>`;
+  }).join('');
+  const sec=box.closest('section');
+  sec.querySelector('.pb').style.width=(total?done/total*100:0)+'%';
+  sec.querySelector('.pt').textContent=`${done} z ${total}`;
+  $('#p-'+name).style.width=(total?done/total*100:0)+'%';
+  box.onchange=e=>{if(e.target.dataset.id){st.done[e.target.dataset.id]=e.target.checked;save();renderList(name)}};
+  box.onclick=e=>{const b=e.target.closest('[data-rm]');if(!b)return;
+    if(b.dataset.ex!==undefined){const arr=st.extra[b.dataset.ci];arr.splice(+b.dataset.ex,1);
+      // przesuń zaznaczenia dopisanych pozycji
+      const nd={};Object.keys(st.done).forEach(k=>{const m=k.match(/^(\d+)-x(\d+)$/);if(m&&m[1]===b.dataset.ci){const n=+m[2];if(n<+b.dataset.ex)nd[k]=st.done[k];else if(n>+b.dataset.ex)nd[m[1]+'-x'+(n-1)]=st.done[k]}else nd[k]=st.done[k]});st.done=nd;
+    } else {st.removed[b.dataset.rm]=1;delete st.done[b.dataset.rm]}
+    save();renderList(name)};
+  box.onsubmit=e=>{e.preventDefault();const inp=e.target.querySelector('input'),v=inp.value.trim();if(!v)return;
+    const ci=e.target.dataset.ci;(st.extra[ci]=st.extra[ci]||[]).push(v.replace(/\|/g,'/'));save();renderList(name);
+    document.querySelector(`.lists[data-list="${name}"] form[data-ci="${ci}"] input`).focus()};
+}
+
+/* ---------- metody ---------- */
+const METHODS=[
+ {n:'Rodzicielstwo bliskości',t:'Attachment parenting',c:'var(--rose)',
+  p:'Opiera się na teorii przywiązania: dziecko, którego potrzeby są szybko i czule zaspokajane, buduje poczucie bezpieczeństwa, z którego potem śmiało rusza w świat.',
+  l:['Reagowanie na płacz jako na komunikat, a nie „manipulację”','Dużo kontaktu fizycznego, noszenie, przytulanie','Uważne obserwowanie sygnałów dziecka','Elastyczność zamiast sztywnych harmonogramów'],
+  r:'William i Martha Sears – „Rodzicielstwo bliskości”'},
+ {n:'Montessori od niemowlęctwa',t:'Maria Montessori',c:'var(--sage)',
+  p:'Dziecko od urodzenia jest aktywnym odkrywcą. Rolą dorosłego jest przygotować bezpieczne, uporządkowane otoczenie i nie przeszkadzać w skupieniu.',
+  l:['Niski materac lub łóżko podłogowe, lustro przy macie','Kilka prostych zabawek z naturalnych materiałów zamiast wielu','Mówienie do dziecka, co się z nim robi','Szacunek dla koncentracji – nie przerywamy, gdy maluch coś bada'],
+  r:'Simone Davies, Junnifa Uzodike – „The Montessori Baby”'},
+ {n:'Pikler i RIE',t:'Emmi Pikler, Magda Gerber',c:'var(--sky)',
+  p:'Niemowlę traktowane jest jako pełnoprawna osoba. Kluczowe są swobodny, niewymuszany rozwój ruchowy i uważna, niespieszna pielęgnacja.',
+  l:['Nie sadzamy i nie stawiamy dziecka, zanim zrobi to samo','Czas na swobodną zabawę na plecach na twardym podłożu','Przewijanie i kąpiel jako czas bliskości i współpracy','Mniej „zabawiania”, więcej obserwowania'],
+  r:'Magda Gerber – „Dear Parent: Caring for Infants with Respect”'},
+ {n:'Reggio Emilia',t:'Loris Malaguzzi',c:'var(--peach)',
+  p:'Dziecko jest kompetentne i ma „sto języków” wyrażania siebie. Otoczenie to „trzeci nauczyciel”, a dorosły towarzyszy, dokumentuje i zadaje pytania.',
+  l:['Naturalne materiały, światło, lustra, rzeczy z codzienności','Podążanie za tym, co dziecko akurat ciekawi','Dokumentowanie: zdjęcia, notatki, prace dziecka','Sztuka i zmysły jako sposób poznawania świata'],
+  r:'Carolyn Edwards i in. – „The Hundred Languages of Children”'},
+ {n:'Porozumienie bez przemocy',t:'Marshall Rosenberg',c:'#B49FCC',
+  p:'Sposób komunikacji oparty na empatii: zamiast ocen i kar – nazywanie uczuć i potrzeb, swoich i dziecka. Przydaje się od pierwszych tygodni po… całe życie.',
+  l:['Obserwacja zamiast oceny („widzę…” zamiast „znowu…”)','Nazywanie uczuć dziecka, nawet gdy jeszcze nie mówi','Szukanie potrzeby kryjącej się za zachowaniem','Prośba zamiast żądania'],
+  r:'Marshall Rosenberg – „Porozumienie bez przemocy”'},
+ {n:'Kompetentne dziecko',t:'Jesper Juul',c:'#C9A96E',
+  p:'Relacja z dzieckiem opiera się na równej godności. Dorosły bierze odpowiedzialność za atmosferę i granice, a dziecko traktowane jest jako ktoś, od kogo też można się uczyć.',
+  l:['Autentyczność rodzica zamiast odgrywania roli','Mówienie o sobie („ja nie chcę”) zamiast o dziecku („jesteś niegrzeczny”)','Granice stawiane osobiście, nie „bo tak się robi”','Słuchanie informacji, które niesie zachowanie dziecka'],
+  r:'Jesper Juul – „Twoje kompetentne dziecko”'},
+ {n:'Jak mówić, żeby dzieci słuchały',t:'Adele Faber, Elaine Mazlish',c:'#7FB3A8',
+  p:'Bardzo praktyczne narzędzia komunikacji – przydadzą się trochę później, ale dobrze znać je zawczasu.',
+  l:['Opisz, co widzisz, zamiast krytykować','Daj wybór („niebieska czy zielona bluzka?”)','Doceniaj opisowo zamiast oceniać („ułożyłeś wszystkie klocki”)','Zamień problem w zabawę'],
+  r:'A. Faber, E. Mazlish – „Jak mówić, żeby dzieci nas słuchały. Jak słuchać, żeby dzieci do nas mówiły”'}
+];
+$('#methods').innerHTML=METHODS.map(m=>`<div class="card method" style="--c:${m.c}"><div class="tag">${m.t}</div><h3>${m.n}</h3><p>${m.p}</p><b>W praktyce:</b><ul>${m.l.map(x=>`<li>${x}</li>`).join('')}</ul><div class="read">📖 ${m.r}</div></div>`).join('');
+
+/* ---------- zabawy ---------- */
+const AGES=['0–3 mies.','3–6 mies.','6–9 mies.','9–12 mies.','1–2 lata'];
+const PLAYS=[
+ [0,'🖤','Kontrastowe obrazki','Czarno-białe karty lub książeczka ok. 20–30 cm od twarzy. Noworodek najlepiej widzi mocne kontrasty.'],
+ [0,'🤱','Na brzuszku na mamie','Leżenie na brzuszku na Twojej klatce piersiowej – trening mięśni szyi i dużo bliskości.'],
+ [0,'🎶','Śpiewanie i mówienie','Opowiadaj, co robisz, nuć kołysanki. Twój głos to dla maluszka najciekawszy dźwięk.'],
+ [0,'😮','Rozmowa minami','Pokaż język, uśmiechnij się, zrób „O” ustami i poczekaj – maluch może spróbować naśladować.'],
+ [0,'🔔','Gdzie ten dźwięk?','Delikatnie potrząśnij grzechotką raz z jednej, raz z drugiej strony główki.'],
+ [1,'🪞','Lusterko','Bezpieczne lusterko przy macie – dzieci uwielbiają oglądać „to drugie dziecko”.'],
+ [1,'🧸','Sięganie po zabawki','Kilka zabawek w zasięgu rączek na macie lub pałąku. Zachęca do chwytania i przekręcania się.'],
+ [1,'🍃','Szeleszczące materiały','Kawałki różnych tkanin, folia, papier – do dotykania i miętoszenia.'],
+ [1,'🙈','A kuku!','Chowanie twarzy za pieluszką i wyłanianie się. Zawsze hit.'],
+ [1,'🫧','Bańki mydlane','Puszczaj bańki – maluch śledzi je wzrokiem i próbuje łapać.'],
+ [2,'🧺','Kosz skarbów','Koszyk z bezpiecznymi przedmiotami z domu: drewniana łyżka, szczoteczka, metalowa miseczka, kłębek wełny.'],
+ [2,'🧣','Gdzie się schowało?','Chowanie zabawki pod pieluszką – uczy, że rzeczy istnieją, nawet gdy ich nie widać.'],
+ [2,'🥁','Orkiestra z kuchni','Garnki, pokrywki i drewniane łyżki. Głośno, ale bardzo rozwijająco.'],
+ [2,'📚','Książeczki kartonowe','Proste obrazki, nazywanie rzeczy, pokazywanie palcem.'],
+ [2,'🫙','Przesypywanie','Przekładanie dużych klocków z pojemnika do pojemnika i z powrotem.'],
+ [3,'📦','Wkładanie i wyjmowanie','Pudełko z otworem, do którego wrzuca się piłeczki lub klocki. Proste i wciągające.'],
+ [3,'⚽','Turlanie piłki','Siedzicie naprzeciw siebie i turlacie piłkę – pierwsza „wspólna gra”.'],
+ [3,'🦀','Wierszyki z pokazywaniem','„Idzie rak, nieborak…”, „Sroczka kaszkę warzyła” – rytm, dotyk i śmiech.'],
+ [3,'🛋️','Tor z poduszek','Poduszki i koce na podłodze do wspinania się i raczkowania.'],
+ [3,'🚶','Wspólne pchanie','Pchacz lub stabilne krzesełko do pierwszych kroków przy wsparciu.'],
+ [4,'🔷','Sorter kształtów','Dopasowywanie klocków do otworów – nauka przez próby i błędy.'],
+ [4,'🖍️','Pierwsze bazgroły','Grube kredki świecowe i duży arkusz papieru przyklejony do podłogi.'],
+ [4,'🍼','Karmienie misia','Zabawa w udawanie: karmienie, usypianie, kąpanie pluszaka.'],
+ [4,'💧','Zabawy z wodą','Miska wody, kubeczki, gąbka, lejek. Najlepiej w łazience lub na dworze.'],
+ [4,'🧹','Mały pomocnik','Wkładanie skarpetek do kosza, wycieranie stołu – dzieci uwielbiają prawdziwe zadania.'],
+ [4,'🌿','Spacer odkrywcy','Zbieranie liści, szyszek, kamyków i oglądanie ich razem w domu.']
+];
+let ageSel=-1;
+function renderPlays(){
+  S.fav=S.fav||{};
+  $('#ages').innerHTML=[`<button class="chip${ageSel===-1?' on':''}" data-a="-1">Wszystkie</button>`,`<button class="chip${ageSel===-2?' on':''}" data-a="-2">♡ Ulubione</button>`].concat(AGES.map((a,i)=>`<button class="chip${ageSel===i?' on':''}" data-a="${i}">${a}</button>`)).join('');
+  const list=PLAYS.map((p,i)=>({p,i})).filter(({p,i})=>ageSel===-1||(ageSel===-2?S.fav[i]:p[0]===ageSel));
+  $('#plays').innerHTML=list.length?list.map(({p,i})=>`<div class="card play"><button class="fav${S.fav[i]?' on':''}" data-f="${i}" aria-label="Ulubione">♥</button><div class="em">${p[1]}</div><div class="age">${AGES[p[0]]}</div><h3>${p[2]}</h3><p>${p[3]}</p></div>`).join(''):'<p class="lead">Nie ma jeszcze ulubionych – kliknij serduszko przy zabawie.</p>';
+}
+$('#ages').onclick=e=>{const b=e.target.closest('[data-a]');if(b){ageSel=+b.dataset.a;renderPlays()}};
+$('#plays').onclick=e=>{const b=e.target.closest('[data-f]');if(b){const i=b.dataset.f;S.fav[i]=!S.fav[i];if(!S.fav[i])delete S.fav[i];save();renderPlays()}};
+
+/* ---------- pokój ---------- */
+const CATALOG=[
+ ['Łóżeczko',120,60,'#F2E3C9'],['Komoda z przewijakiem',90,50,'#E6D2B5'],['Szafa',100,55,'#D9C2A3'],['Fotel do karmienia',75,75,'#C8D8C5'],
+ ['Regał',80,30,'#E8D7C0'],['Kosz na zabawki',40,40,'#E9C4A8'],['Dywan',170,120,'#F3C9B6','rug'],['Okrągły dywan',120,120,'#CFE0EA','rug round'],
+ ['Łóżko dorosłe',160,200,'#E0D3E8'],['Biurko',120,60,'#DCCBB4'],['Lampa',35,35,'#F7E3A1','round'],['Pufa',45,45,'#E8B4B4','round'],
+ ['Drzwi',80,80,'#fff','door'],['Okno',120,12,'#bfdcf0','win']
+];
+const WALLS=['#C9B8A8','#A7BFA3','#E4B9A0','#A9C2D6','#D7C8E3','#EDE6DA','#8E7F74'];
+const FLOORS=['#EAD9C3','#D9BC97','#C9A27A','#E8E4DE','#CFCAC2','#F1E9DD'];
+function defRoom(){return{w:320,h:360,wall:WALLS[0],floor:FLOORS[0],items:[
+ {n:'Drzwi',w:80,h:80,x:0,y:280,c:'#fff',k:'door'},{n:'Okno',w:120,h:12,x:100,y:0,c:'#bfdcf0',k:'win'},
+ {n:'Łóżeczko',w:120,h:60,x:190,y:20,c:'#F2E3C9'},{n:'Komoda z przewijakiem',w:90,h:50,x:225,y:290,c:'#E6D2B5'},
+ {n:'Fotel do karmienia',w:75,h:75,x:20,y:30,c:'#C8D8C5'},{n:'Dywan',w:170,h:120,x:75,y:130,c:'#F3C9B6',k:'rug'}]}}
+S.room=S.room||defRoom();
+let R=S.room,sel=-1,scale=1;
+const roomEl=$('#room');
+function drawRoom(){
+  const avail=Math.max(200,roomEl.parentElement.clientWidth-56);
+  scale=Math.min(avail/R.w,(innerHeight*.62)/R.h,2.2);
+  roomEl.style.width=R.w*scale+12+'px';roomEl.style.height=R.h*scale+12+'px';
+  roomEl.style.setProperty('--wall',R.wall);roomEl.style.setProperty('--floor',R.floor);
+  roomEl.style.backgroundSize=`${50*scale}px ${50*scale}px`;
+  roomEl.innerHTML=R.items.map((it,i)=>`<div class="fur ${it.k||''}${i===sel?' sel':''}" data-i="${i}" style="left:${it.x*scale}px;top:${it.y*scale}px;width:${it.w*scale}px;height:${it.h*scale}px;background:${it.c}">${it.k==='door'||it.k==='win'?'':(it.w*scale>46&&it.h*scale>22?esc(it.n):'')}</div>`).join('');
+  $('#dimW').textContent=`↔ ${R.w} cm`;$('#dimH').textContent=`↕ ${R.h} cm`;
+  $('#roomW').value=R.w;$('#roomH').value=R.h;
+  const box=$('#selbox');
+  if(sel>=0&&R.items[sel]){const it=R.items[sel];box.hidden=false;$('#selName').textContent=it.n;$('#selW').value=it.w;$('#selH').value=it.h;$('#selC').value=/^#[0-9a-f]{6}$/i.test(it.c)?it.c:'#ffffff'}
+  else box.hidden=true;
+  $('#wallSw').innerHTML=WALLS.map(c=>`<button style="background:${c}" data-wall="${c}" aria-label="Kolor ścian"></button>`).join('');
+  $('#floorSw').innerHTML=FLOORS.map(c=>`<button style="background:${c}" data-floor="${c}" aria-label="Kolor podłogi"></button>`).join('');
+}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function fit(it){it.x=clamp(it.x,0,Math.max(0,R.w-it.w));it.y=clamp(it.y,0,Math.max(0,R.h-it.h))}
+let drag=null;
+roomEl.addEventListener('pointerdown',e=>{
+  const f=e.target.closest('.fur');
+  if(!f){sel=-1;drawRoom();return}
+  sel=+f.dataset.i;const it=R.items[sel];
+  drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:it.x,oy:it.y};
+  drawRoom();roomEl.setPointerCapture(e.pointerId);e.preventDefault();
+});
+roomEl.addEventListener('pointermove',e=>{
+  if(!drag||e.pointerId!==drag.id)return;
+  const it=R.items[sel];
+  it.x=Math.round((drag.ox+(e.clientX-drag.sx)/scale)/5)*5;
+  it.y=Math.round((drag.oy+(e.clientY-drag.sy)/scale)/5)*5;
+  fit(it);
+  const el=roomEl.querySelector(`[data-i="${sel}"]`);el.style.left=it.x*scale+'px';el.style.top=it.y*scale+'px';
+});
+const endDrag=e=>{if(drag&&e.pointerId===drag.id){drag=null;save()}};
+roomEl.addEventListener('pointerup',endDrag);roomEl.addEventListener('pointercancel',endDrag);
+$('#catalog').innerHTML=CATALOG.map((c,i)=>`<button data-c="${i}">${c[0]}</button>`).join('');
+$('#catalog').onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;const c=CATALOG[b.dataset.c];
+  const it={n:c[0],w:c[1],h:c[2],c:c[3],k:c[4]||'',x:R.w/2-c[1]/2,y:R.h/2-c[2]/2};fit(it);
+  if(it.k.includes('rug'))R.items.unshift(it),sel=0;else R.items.push(it),sel=R.items.length-1;save();drawRoom()};
+$('#rot').onclick=()=>{const it=R.items[sel];if(!it)return;[it.w,it.h]=[it.h,it.w];fit(it);save();drawRoom()};
+$('#dup').onclick=()=>{const it=R.items[sel];if(!it)return;const n={...it,x:it.x+20,y:it.y+20};fit(n);R.items.push(n);sel=R.items.length-1;save();drawRoom()};
+$('#del').onclick=()=>{if(sel<0)return;R.items.splice(sel,1);sel=-1;save();drawRoom()};
+$('#selW').onchange=e=>{const it=R.items[sel];it.w=clamp(+e.target.value||10,10,R.w);fit(it);save();drawRoom()};
+$('#selH').onchange=e=>{const it=R.items[sel];it.h=clamp(+e.target.value||10,10,R.h);fit(it);save();drawRoom()};
+$('#selC').oninput=e=>{const it=R.items[sel];it.c=e.target.value;save();drawRoom()};
+$('#roomW').onchange=e=>{R.w=clamp(+e.target.value||300,150,800);R.items.forEach(fit);save();drawRoom()};
+$('#roomH').onchange=e=>{R.h=clamp(+e.target.value||300,150,800);R.items.forEach(fit);save();drawRoom()};
+$('#wallSw').onclick=e=>{const c=e.target.dataset.wall;if(c){R.wall=c;save();drawRoom()}};
+$('#floorSw').onclick=e=>{const c=e.target.dataset.floor;if(c){R.floor=c;save();drawRoom()}};
+$('#resetRoom').onclick=()=>{if(confirm('Wyczyścić plan i zacząć od nowa?')){R=S.room=defRoom();sel=-1;save();drawRoom()}};
+addEventListener('resize',()=>{if($('#pokoj').classList.contains('on'))drawRoom()});
+
+/* ---------- notatki ---------- */
+const notes=$('#notes');notes.value=S.notes||'';let nt;
+notes.addEventListener('input',()=>{S.notes=notes.value;clearTimeout(nt);nt=setTimeout(()=>{save();$('#saved').textContent='Zapisano ✓';setTimeout(()=>$('#saved').textContent='',1500)},400)});
+document.querySelector('.prompts').onclick=e=>{const p=e.target.dataset.p;if(!p)return;
+  notes.value=(notes.value.trim()?notes.value.replace(/\s*$/,'')+'\n\n':'')+p+'\n– ';notes.dispatchEvent(new Event('input'));notes.focus();notes.setSelectionRange(notes.value.length,notes.value.length)};
+
+/* ---------- start ---------- */
+renderList('wyprawka');renderList('szpital');renderPlays();showDue();route();
+</script>
+</body>
+</html>
