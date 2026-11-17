@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Zakupy za 9 zł</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap">
+<style>
+/* Jeden ekran = jedna stacja lekcji, duże pola dotykowe na tablicę interaktywną */
+:root{
+  --bg:#FBFAF6; --grid:#DCE7EC; --ink:#2E2219; --soft:#6E6156; --card:#FFFFFF; --line:#D9D2C6;
+  --accent:#2F7A78; --pen:#C0392B; --ok:#3C8D4E; --warn:#C0392B; --water:#2F8FD0; --waterl:#BFDDF3;
+  --font:"Andika","Trebuchet MS",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1B1A17;--grid:#2A2D2F;--ink:#F3EDE4;--soft:#B9AE9F;--card:#25231F;--line:#3E3A33;--accent:#6CC1BD;--pen:#F07A6A;--waterl:#24435E;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1B1A17;--grid:#2A2D2F;--ink:#F3EDE4;--soft:#B9AE9F;--card:#25231F;--line:#3E3A33;--accent:#6CC1BD;--pen:#F07A6A;--waterl:#24435E;color-scheme:dark}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font-family:var(--font);margin:0;display:flex;flex-direction:column;overflow:hidden}
+nav{display:flex;align-items:center;gap:4px;background:var(--bg);padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);overflow-x:auto;flex:none}
+nav button{font:700 16px var(--font);color:var(--soft);background:none;border:none;border-bottom:4px solid transparent;padding:8px 10px;cursor:pointer;white-space:nowrap}
+nav button b{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border:2px solid currentColor;border-radius:50%;margin-right:6px;font-size:.85em}
+nav button[aria-current="true"]{color:var(--ink);border-bottom-color:var(--pen)}
+nav .sp{flex:1}
+.arrow{font-size:26px!important;color:var(--ink)!important;border:2px solid var(--ink)!important;border-radius:12px;width:56px;padding:4px 0!important}
+main{flex:1;min-height:0;position:relative}
+section{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2.2vh,24px);padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));text-align:center;overflow:auto}
+h1{font-weight:700;font-size:clamp(30px,5.6vw,80px);line-height:1.05;margin:0;text-wrap:balance}
+h2{font-weight:700;font-size:clamp(24px,3.8vw,52px);margin:0;text-wrap:balance}
+.sub{font-size:clamp(17px,2.1vw,28px);color:var(--soft);margin:0;max-width:40ch}
+.btn{font:700 clamp(17px,1.9vw,24px) var(--font);background:var(--accent);color:#fff;border:none;border-radius:8px;box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 60%,#000);padding:12px 22px;cursor:pointer;min-height:54px}
+.btn.ghost{background:var(--card);color:var(--ink);border:2px solid var(--ink);box-shadow:0 4px 0 var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:center}
+button:focus-visible{outline:4px solid var(--accent);outline-offset:3px}
+.answer{font-weight:700;font-size:clamp(22px,3vw,42px);color:var(--pen);min-height:1.3em}
+.paper{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:14px 18px}
+.cbtn{background:none;border:none;padding:0;cursor:pointer;line-height:0}
+.cbtn:active{transform:scale(.94)}
+.coin{height:auto;display:block;filter:drop-shadow(0 3px 0 rgba(0,0,0,.18))}
+.big{gap:clamp(20px,4vw,60px)}
+.dots{display:flex;gap:10px;min-height:36px}
+.dots i{width:32px;height:32px;border-radius:50%;background:var(--pen);display:block}
+.tray{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;min-height:clamp(80px,11vw,130px);min-width:min(80vw,520px);background:var(--card);border:2px dashed var(--line);border-radius:12px;padding:10px}
+.pay{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center}
+.sum{font-weight:700;font-size:clamp(22px,2.8vw,40px)}
+.sum b{color:var(--pen);font-size:1.4em;font-variant-numeric:tabular-nums}
+.shelf{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;max-width:1150px;width:100%}
+@media (max-width:900px){.shelf{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.prod{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:8px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink);font:400 clamp(13px,1.3vw,17px) var(--font)}
+.prod b{font-size:clamp(13px,1.35vw,18px);line-height:1.15}
+.prod .dot{width:28px;height:28px;border-radius:50%}
+.prod .price{font-weight:700;font-size:clamp(18px,2vw,28px);color:var(--pen)}
+.prod.sel{border-color:var(--accent);transform:translateY(-3px)}
+.chip{font:700 clamp(15px,1.6vw,20px) var(--font);border:2px solid var(--accent);color:var(--accent);background:var(--card);border-radius:999px;padding:8px 16px;cursor:pointer}
+.found{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:1100px}
+.fway{display:flex;align-items:center;gap:4px;background:var(--card);border:2px solid var(--ok);border-radius:10px;padding:6px 10px;font-weight:700;font-size:clamp(14px,1.5vw,20px)}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+<nav id="nav" aria-label="Stacje lekcji"></nav>
+<main>
+<section id="start">
+  <p class="sub">MATEMATYKA · JESiENNA SŁOTA</p>
+  <h1>ZAKUPY ZA 9 ZŁ</h1>
+  <p class="sub">DOBiORĘ MONETY, ABY ZAPŁACiĆ ZA PRZEDMiOT W ZAKRESiE 9 ZŁ.</p>
+  <button class="btn" data-go="monety">ZACZYNAMY →</button>
+</section>
+
+<section id="monety" hidden>
+  <h2>JAKiE TO MONETY?</h2>
+  <p class="sub">DOTKNiJ MONETY.</p>
+  <div class="row big" id="coinIntro"></div>
+  <div class="dots" id="introDots"></div>
+  <div class="answer" id="introAns"></div>
+</section>
+
+<section id="ile" hidden>
+  <h2>iLE TO ZŁOTYCH?</h2>
+  <div class="tray" id="ileTray"></div>
+  <div class="row"><button class="btn" id="ileShow">POKAŻ</button><button class="btn ghost" id="ileNew">NOWE MONETY</button></div>
+  <div class="answer" id="ileAns"></div>
+</section>
+
+<section id="sklep" hidden>
+  <h2>ZAPŁAĆ ZA ZAKUPY</h2>
+  <div class="shelf" id="shelf"></div>
+  <div class="pay">
+    <div class="tray" id="payTray" aria-label="Zapłacone monety"><span class="sub">TU POŁÓŻ MONETY</span></div>
+    <div class="sum">RAZEM: <b id="paySum">0</b> ZŁ</div>
+  </div>
+  <div class="row" id="purse"></div>
+  <div class="row"><button class="btn" id="payCheck">SPRAWDŹ</button><button class="btn ghost" id="payClear">ZABiERZ MONETY</button></div>
+  <div class="answer" id="payAns"></div>
+</section>
+
+<section id="sposoby" hidden>
+  <h2>NA iLE SPOSOBÓW ZAPŁACiSZ <span id="goalTxt">9</span> ZŁ?</h2>
+  <div class="row"><span class="sub">CENA:</span><span id="goalBtns" class="row"></span></div>
+  <div class="pay">
+    <div class="tray" id="wayTray"><span class="sub">UŁÓŻ MONETY</span></div>
+    <div class="sum">RAZEM: <b id="waySum">0</b> ZŁ</div>
+  </div>
+  <div class="row" id="wayPurse"></div>
+  <div class="row"><button class="btn" id="wayAdd">ZAPiSZ SPOSÓB</button><button class="btn ghost" id="wayClear">OD NOWA</button></div>
+  <div class="found" id="found"></div>
+  <div class="answer" id="wayAns"></div>
+</section>
+
+</main>
+<script>
+const SECTIONS=[["start","START"],["monety","MONETY"],["ile","iLE TO ZŁ?"],["sklep","SKLEP"],["sposoby","NA iLE SPOSOBÓW"]];
+const nav=document.getElementById('nav');
+SECTIONS.forEach(([id,l],i)=>{const b=document.createElement('button');b.innerHTML=(i?'<b>'+i+'</b>':'')+l;b.dataset.go=id;nav.appendChild(b)});
+const sp=document.createElement('div');sp.className='sp';
+const prev=document.createElement('button');prev.className='arrow';prev.textContent='←';prev.setAttribute('aria-label','Poprzedni');
+const next=document.createElement('button');next.className='arrow';next.textContent='→';next.setAttribute('aria-label','Następny');
+nav.append(sp,prev,next);
+function cur(){const h=location.hash.slice(1);return SECTIONS.some(s=>s[0]===h)?h:'start'}
+function show(){const c=cur();SECTIONS.forEach(([id])=>{document.getElementById(id).hidden=id!==c});nav.querySelectorAll('[data-go]').forEach(b=>b.setAttribute('aria-current',b.dataset.go===c))}
+function go(id){location.hash=id}
+function step(d){const i=SECTIONS.findIndex(s=>s[0]===cur());go(SECTIONS[Math.max(0,Math.min(SECTIONS.length-1,i+d))][0])}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
+prev.onclick=()=>step(-1);next.onclick=()=>step(1);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')step(1);if(e.key==='ArrowLeft'||e.key==='PageUp')step(-1)});
+addEventListener('hashchange',show);
+
+/* dźwięk kropli */
+let ac=null,unlocked=false;
+function ctx(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(ac&&ac.state!=='running')ac.resume();return ac}
+function unlock(){if(unlocked)return;unlocked=true;try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}ctx()}
+['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,unlock,{capture:true,passive:true}));
+function plop(k=0){const a=ctx();if(!a)return;const t=a.currentTime+0.02,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(600+k*60,t);o.frequency.exponentialRampToValueAtTime(1300+k*80,t+0.09);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.6,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+0.18);o.connect(g).connect(a.destination);o.start(t);o.stop(t+0.2)}
+
+
+/* --- monety jako SVG --- */
+function coin(v,size){const gold='#D9B45A',goldD='#A9843A',sil='#D8DCE0',silD='#9AA2AA';
+  let outer=sil,outerS=silD,inner=null;
+  if(v===2){outer=sil;outerS=silD;inner=gold}
+  if(v===5){outer=gold;outerS=goldD;inner=sil}
+  return `<svg class="coin" viewBox="0 0 100 100" style="width:${size}"><circle cx="50" cy="50" r="46" fill="${outer}" stroke="${outerS}" stroke-width="4"/>${inner?`<circle cx="50" cy="50" r="30" fill="${inner}" stroke="${outerS}" stroke-width="2"/>`:`<circle cx="50" cy="50" r="36" fill="none" stroke="${outerS}" stroke-width="2" stroke-dasharray="3 4"/>`}<text x="50" y="62" text-anchor="middle" font-family="Andika,Arial" font-weight="700" font-size="34" fill="#2E2219">${v}</text><text x="50" y="80" text-anchor="middle" font-family="Andika,Arial" font-weight="700" font-size="11" fill="#2E2219">ZŁ</text></svg>`}
+function ding(){plop(3)}
+const SZ='clamp(64px,8vw,110px)';
+
+/* poznaj */
+const intro=document.getElementById('coinIntro');
+[1,2,5].forEach(v=>{const b=document.createElement('button');b.className='cbtn';b.innerHTML=coin(v,'clamp(110px,14vw,190px)');b.onclick=()=>{document.getElementById('introDots').innerHTML='<i></i>'.repeat(v);document.getElementById('introAns').textContent=v===1?'1 ZŁOTY':(v===2?'2 ZŁOTE':'5 ZŁOTYCH');ding()};intro.appendChild(b)});
+
+/* ile */
+function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+let ileSet=[];
+function newIle(){let s;do{s=[];const n=rnd(2,4);for(let i=0;i<n;i++)s.push([1,2,5][rnd(0,2)])}while(s.reduce((a,b)=>a+b,0)>9);ileSet=s.sort((a,b)=>b-a);document.getElementById('ileTray').innerHTML=s.map(v=>coin(v,SZ)).join('');document.getElementById('ileAns').textContent=''}
+document.getElementById('ileNew').onclick=newIle;
+document.getElementById('ileShow').onclick=()=>{const t=ileSet.reduce((a,b)=>a+b,0);document.getElementById('ileAns').textContent=ileSet.join(' + ')+' = '+t+' ZŁ'};
+newIle();
+
+/* sklep */
+const PROD=[['BiDON',6,'#E2433A'],['PARASOL',8,'#F2B83A'],['BUTELKA NA WODĘ',7,'#7FB3E0'],['OŁÓWEK',3,'#4FA845'],['GUMKA',2,'#E58FB0'],['KREDKi',9,'#7B4AA6'],['ZESZYT',4,'#2F7A78'],['LiNiJKA',5,'#C98B3E']];
+let target=null,paid=[];
+const shelf=document.getElementById('shelf');
+PROD.forEach(([n,p,c])=>{const b=document.createElement('button');b.className='prod';b.innerHTML=`<span class="dot" style="background:${c}"></span><b>${n}</b><span class="price">${p} ZŁ</span>`;b.onclick=()=>{shelf.querySelectorAll('.prod').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');target=p;clearPay();document.getElementById('payAns').textContent=`ZAPŁAĆ ${p} ZŁ ZA: ${n}`};shelf.appendChild(b)});
+function drawTray(id,arr,sumId,onRemove,ph){const t=document.getElementById(id);t.innerHTML=arr.length?'':`<span class="sub">${ph}</span>`;arr.forEach((v,i)=>{const b=document.createElement('button');b.className='cbtn';b.innerHTML=coin(v,SZ);b.setAttribute('aria-label','Zabierz '+v+' zł');b.onclick=()=>onRemove(i);t.appendChild(b)});document.getElementById(sumId).textContent=arr.reduce((a,b)=>a+b,0)}
+function clearPay(){paid=[];drawTray('payTray',paid,'paySum',rmPay,'TU POŁÓŻ MONETY')}
+function rmPay(i){paid.splice(i,1);drawTray('payTray',paid,'paySum',rmPay,'TU POŁÓŻ MONETY')}
+function purse(id,cb){const p=document.getElementById(id);[1,2,5].forEach(v=>{const b=document.createElement('button');b.className='cbtn';b.innerHTML=coin(v,'clamp(70px,8.5vw,120px)');b.setAttribute('aria-label','Dodaj '+v+' zł');b.onclick=()=>cb(v);p.appendChild(b)})}
+purse('purse',v=>{paid.push(v);ding();drawTray('payTray',paid,'paySum',rmPay,'TU POŁÓŻ MONETY')});
+document.getElementById('payClear').onclick=()=>{clearPay();document.getElementById('payAns').textContent=''};
+document.getElementById('payCheck').onclick=()=>{const s=paid.reduce((a,b)=>a+b,0),a=document.getElementById('payAns');if(target===null){a.textContent='NAJPiERW WYBiERZ PRZEDMiOT.';return}
+  a.innerHTML=s===target?`<span style="color:var(--ok)">ZGADZA SiĘ! ${paid.join(' + ')} = ${s} ZŁ</span>`:(s<target?`<span style="color:var(--warn)">BRAKUJE ${target-s} ZŁ.</span>`:`<span style="color:var(--warn)">TO O ${s-target} ZŁ ZA DUŻO.</span>`)};
+
+/* sposoby */
+let goal=9,way=[],ways=[];
+const gb=document.getElementById('goalBtns');
+[5,6,7,8,9].forEach(g=>{const b=document.createElement('button');b.className='chip';b.textContent=g+' ZŁ';b.onclick=()=>{goal=g;document.getElementById('goalTxt').textContent=g;ways=[];document.getElementById('found').innerHTML='';clearWay();document.getElementById('wayAns').textContent=''};gb.appendChild(b)});
+function clearWay(){way=[];drawTray('wayTray',way,'waySum',rmWay,'UŁÓŻ MONETY')}
+function rmWay(i){way.splice(i,1);drawTray('wayTray',way,'waySum',rmWay,'UŁÓŻ MONETY')}
+purse('wayPurse',v=>{way.push(v);ding();drawTray('wayTray',way,'waySum',rmWay,'UŁÓŻ MONETY')});
+document.getElementById('wayClear').onclick=()=>{clearWay();document.getElementById('wayAns').textContent=''};
+function allWays(g){let c=0;for(let f=0;f*5<=g;f++)for(let t=0;f*5+t*2<=g;t++)c++;return c}
+document.getElementById('wayAdd').onclick=()=>{const s=way.reduce((a,b)=>a+b,0),a=document.getElementById('wayAns');
+  if(s!==goal){a.innerHTML=`<span style="color:var(--warn)">${s<goal?'BRAKUJE '+(goal-s)+' ZŁ.':'O '+(s-goal)+' ZŁ ZA DUŻO.'}</span>`;return}
+  const key=way.slice().sort((x,y)=>y-x).join('+');if(ways.includes(key)){a.textContent='TEN SPOSÓB JUŻ MAMY. SPRÓBUJ iNACZEJ.';return}
+  ways.push(key);const r=document.createElement('div');r.className='fway';r.innerHTML=way.slice().sort((x,y)=>y-x).map(v=>coin(v,'clamp(34px,3.6vw,50px)')).join('')+`<span>${key} = ${goal}</span>`;document.getElementById('found').appendChild(r);clearWay();plop(4);
+  const all=allWays(goal);a.textContent=ways.length>=all?`BRAWO! ZNALEŹLiŚCiE WSZYSTKiE SPOSOBY: ${all}.`:`MAMY ${ways.length} ${ways.length===1?'SPOSÓB':(ways.length<5?'SPOSOBY':'SPOSOBÓW')}. SZUKAJMY DALEJ.`};
+
+show();
+</script>
+</body></html>

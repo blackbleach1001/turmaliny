@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Błękitna Planeta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap">
+<style>
+/* Jeden ekran = jedna stacja lekcji, duże pola dotykowe na tablicę interaktywną */
+:root{
+  --bg:#FBFAF6; --grid:#DCE7EC; --ink:#2E2219; --soft:#6E6156; --card:#FFFFFF; --line:#D9D2C6;
+  --accent:#2F7A78; --pen:#C0392B; --ok:#3C8D4E; --warn:#C0392B; --water:#2F8FD0; --waterl:#BFDDF3;
+  --font:"Andika","Trebuchet MS",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1B1A17;--grid:#2A2D2F;--ink:#F3EDE4;--soft:#B9AE9F;--card:#25231F;--line:#3E3A33;--accent:#6CC1BD;--pen:#F07A6A;--waterl:#24435E;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1B1A17;--grid:#2A2D2F;--ink:#F3EDE4;--soft:#B9AE9F;--card:#25231F;--line:#3E3A33;--accent:#6CC1BD;--pen:#F07A6A;--waterl:#24435E;color-scheme:dark}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font-family:var(--font);margin:0;display:flex;flex-direction:column;overflow:hidden}
+nav{display:flex;align-items:center;gap:4px;background:var(--bg);padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);overflow-x:auto;flex:none}
+nav button{font:700 16px var(--font);color:var(--soft);background:none;border:none;border-bottom:4px solid transparent;padding:8px 10px;cursor:pointer;white-space:nowrap}
+nav button b{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border:2px solid currentColor;border-radius:50%;margin-right:6px;font-size:.85em}
+nav button[aria-current="true"]{color:var(--ink);border-bottom-color:var(--pen)}
+nav .sp{flex:1}
+.arrow{font-size:26px!important;color:var(--ink)!important;border:2px solid var(--ink)!important;border-radius:12px;width:56px;padding:4px 0!important}
+main{flex:1;min-height:0;position:relative}
+section{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2.2vh,24px);padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));text-align:center;overflow:auto}
+h1{font-weight:700;font-size:clamp(30px,5.6vw,80px);line-height:1.05;margin:0;text-wrap:balance}
+h2{font-weight:700;font-size:clamp(24px,3.8vw,52px);margin:0;text-wrap:balance}
+.sub{font-size:clamp(17px,2.1vw,28px);color:var(--soft);margin:0;max-width:40ch}
+.btn{font:700 clamp(17px,1.9vw,24px) var(--font);background:var(--accent);color:#fff;border:none;border-radius:8px;box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 60%,#000);padding:12px 22px;cursor:pointer;min-height:54px}
+.btn.ghost{background:var(--card);color:var(--ink);border:2px solid var(--ink);box-shadow:0 4px 0 var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:center}
+button:focus-visible{outline:4px solid var(--accent);outline-offset:3px}
+.answer{font-weight:700;font-size:clamp(22px,3vw,42px);color:var(--pen);min-height:1.3em}
+.paper{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:14px 18px}
+.duo{display:flex;gap:clamp(20px,5vw,80px);align-items:center;justify-content:center;flex-wrap:wrap}
+.col{display:flex;flex-direction:column;gap:14px;align-items:center}
+#globe{height:min(52vh,420px);width:auto;max-width:90vw}
+.pin{animation:pop .3s ease}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.tally{display:flex;gap:16px}
+.tally div{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:8px 18px;display:flex;flex-direction:column;align-items:center;min-width:110px}
+.tally b{font-size:clamp(40px,5vw,70px);line-height:1;font-variant-numeric:tabular-nums}
+.tally div:first-child b{color:var(--water)}
+.tally div:last-child b{color:#5E9A3E}
+.tally span{font-weight:700;font-size:clamp(16px,1.6vw,22px)}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:1000px;width:100%}
+@media (max-width:700px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink);font:700 clamp(17px,1.9vw,26px) var(--font);min-height:clamp(120px,19vh,190px);justify-content:center}
+.card svg{width:clamp(70px,8vw,110px);height:auto}
+.card small{font-weight:400;font-size:clamp(13px,1.3vw,18px);color:var(--soft);line-height:1.25}
+.card.open{border-color:var(--accent)}
+.chip{font:700 clamp(15px,1.6vw,20px) var(--font);border:2px solid var(--accent);color:var(--accent);background:var(--card);border-radius:999px;padding:8px 16px;cursor:pointer}
+.pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:1000px;min-height:60px}
+.word{font:700 clamp(17px,1.9vw,26px) var(--font);border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:8px;padding:10px 16px;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+.word.sel{background:var(--ink);color:var(--bg)}
+.word.bad{border-color:var(--warn);color:var(--warn);box-shadow:0 3px 0 var(--warn)}
+.buckets{display:flex;gap:clamp(16px,4vw,60px);flex-wrap:wrap;justify-content:center}
+.bucket{width:clamp(220px,28vw,360px);min-height:clamp(150px,24vh,240px);border:4px solid var(--ink);border-top:none;border-radius:0 0 40px 40px;background:var(--waterl);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px;color:var(--ink);font-family:var(--font)}
+.bucket b{font-size:clamp(22px,2.6vw,36px)}
+.bucket .in{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.bucket .in span{background:var(--card);border-radius:6px;padding:4px 10px;font-weight:700;font-size:clamp(14px,1.5vw,19px)}
+.items{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;max-width:1100px;width:100%}
+@media (max-width:900px){.items{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.item{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:6px;font:700 clamp(14px,1.5vw,20px) var(--font);color:var(--ink)}
+.item .tags{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;min-height:30px}
+.tag{font-size:.8em;border-radius:6px;padding:3px 8px;font-weight:700}
+.tag.g{background:var(--line);color:var(--ink)}
+.tag.p{background:var(--water);color:#fff}
+.tag.t{background:#6E6156;color:#fff}
+.item .opts{display:flex;gap:4px}
+.item .opts button{font:700 clamp(12px,1.3vw,16px) var(--font);border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:6px;padding:6px 8px;cursor:pointer}
+.item.hit{border-color:var(--ok)}
+.item.miss{border-color:var(--warn)}
+#tank{width:min(90vw,900px);max-height:52vh}
+#ball,#bowl{transition:transform 1.4s cubic-bezier(.3,.7,.4,1)}
+#arrows{transition:opacity .6s}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+<nav id="nav" aria-label="Stacje lekcji"></nav>
+<main>
+<section id="start">
+  <p class="sub">DOŚWiADCZAMY, ODKRYWAMY</p>
+  <h1>DLACZEGO ZiEMiA JEST<br>BŁĘKiTNĄ PLANETĄ?</h1>
+  <p class="sub">POKAŻĘ, GDZiE JEST WODA, NAZWĘ ZBiORNiKi WODNE i SPRAWDZĘ, CO PŁYWA, A CO TONiE.</p>
+  <button class="btn" data-go="planeta">ZACZYNAMY →</button>
+</section>
+
+<section id="planeta" hidden>
+  <h2>CZEGO JEST WiĘCEJ NA ZiEMi: WODY CZY LĄDU?</h2>
+  <div class="duo">
+    <svg id="globe" viewBox="0 0 300 300" aria-label="Kula ziemska">
+      <defs><clipPath id="gclip"><circle cx="150" cy="150" r="140"/></clipPath></defs>
+      <circle cx="150" cy="150" r="140" fill="#2F8FD0"/>
+      <g clip-path="url(#gclip)" fill="#7DB45A">
+        <path d="M40 70 C70 40 120 45 130 70 C140 95 110 105 115 130 C120 160 90 175 70 160 C50 145 60 120 45 110 C30 100 25 85 40 70Z"/>
+        <path d="M150 60 C175 45 215 50 235 70 C255 90 240 110 215 112 C195 114 190 130 170 128 C150 126 140 100 150 60Z"/>
+        <path d="M160 150 C185 140 205 155 200 185 C195 215 180 250 160 255 C145 240 150 210 140 190 C132 170 140 158 160 150Z"/>
+        <path d="M225 190 C245 185 265 195 262 215 C258 232 238 236 225 225 C214 216 214 196 225 190Z"/>
+        <path d="M60 205 C75 200 90 210 85 225 C80 238 62 236 55 226 C50 218 52 208 60 205Z"/>
+      </g>
+      <circle cx="150" cy="150" r="140" fill="none" stroke="var(--ink)" stroke-width="3"/>
+      <g id="pins"></g>
+    </svg>
+    <div class="col">
+      <p class="sub" style="max-width:24ch">ZGADNiJ, GDZiE WYLĄDUJE PALEC: NA WODZiE CZY NA LĄDZiE?</p>
+      <button class="btn" id="throw">DOTKNiJ ZiEMi NA ŚLEPO</button>
+      <div class="tally"><div><b id="tW">0</b><span>WODA</span></div><div><b id="tL">0</b><span>LĄD</span></div></div>
+      <button class="btn ghost" id="treset">OD NOWA</button>
+    </div>
+  </div>
+  <div class="answer" id="pAns"></div>
+</section>
+
+<section id="zbiorniki" hidden>
+  <h2>JAKiE SĄ ZBiORNiKi WODNE?</h2>
+  <p class="sub">DOTKNiJ KARTY, ABY ZOBACZYĆ, CO TO JEST.</p>
+  <div class="cards" id="cards"></div>
+  <div class="row local"><span class="sub">W POZNANiU:</span><button class="chip" data-t="WARTA TO RZEKA.">WARTA</button><button class="chip" data-t="MALTA TO JEZiORO (SZTUCZNE).">MALTA</button><button class="chip" data-t="RUSAŁKA TO JEZiORO.">RUSAŁKA</button><button class="chip" data-t="JEZiORO STRZESZYŃSKiE.">STRZESZYNEK</button></div>
+  <div class="answer" id="zAns"></div>
+</section>
+
+<section id="slona" hidden>
+  <h2>WODA SŁONA CZY SŁODKA?</h2>
+  <p class="sub">DOTKNiJ WYRAZU, A POTEM SZKLANKi, DO KTÓREJ PASUJE.</p>
+  <div class="pool" id="pool"></div>
+  <div class="buckets">
+    <button class="bucket" data-b="S"><b>SŁONA</b><div class="in" id="inS"></div></button>
+    <button class="bucket" data-b="D"><b>SŁODKA</b><div class="in" id="inD"></div></button>
+  </div>
+  <div class="row"><button class="btn ghost" id="sReset">OD NOWA</button><button class="btn" id="sFact">CiEKAWOSTKA</button></div>
+  <div class="answer" id="sAns"></div>
+</section>
+
+<section id="plywa" hidden>
+  <h2>CO PŁYWA? CO TONiE?</h2>
+  <p class="sub" id="pMode">1. NAJPiERW ZGADUJEMY: DOTKNiJ PRZEDMiOTU i WYBiERZ.</p>
+  <div class="items" id="items"></div>
+  <div class="row">
+    <button class="btn" id="mode">TERAZ SPRAWDZAMY W WODZiE</button>
+    <button class="btn ghost" id="pReset">OD NOWA</button>
+  </div>
+  <div class="answer" id="iAns"></div>
+</section>
+
+<section id="plastelina" hidden>
+  <h2>DLACZEGO MiSECZKA PŁYWA, A KULKA TONiE?</h2>
+  <svg id="tank" viewBox="0 0 600 300" aria-label="Miska z wodą, plastelinowa kulka i miseczka">
+    <rect x="40" y="120" width="520" height="160" rx="16" fill="var(--waterl)"/>
+    <path d="M40 120 Q120 108 200 120 T360 120 T560 120" fill="none" stroke="var(--water)" stroke-width="4"/>
+    <path d="M30 60 V270 Q30 290 50 290 H550 Q570 290 570 270 V60" fill="none" stroke="var(--ink)" stroke-width="5"/>
+    <circle id="ball" cx="180" cy="60" r="26" fill="#D9473A"/>
+    <path id="bowl" d="M360 48 Q420 110 480 48 Z" fill="#D9473A"/>
+    <g id="arrows" opacity="0"><path d="M420 175 V128" stroke="var(--accent)" stroke-width="7" marker-end="url(#ah)"/><path d="M390 175 V135" stroke="var(--accent)" stroke-width="5" marker-end="url(#ah)"/><path d="M450 175 V135" stroke="var(--accent)" stroke-width="5" marker-end="url(#ah)"/></g>
+    <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,8 L4,0 L8,8 Z" fill="var(--accent)"/></marker></defs>
+  </svg>
+  <div class="row"><button class="btn" id="drop">WRZUĆ DO WODY</button><button class="btn ghost" id="why">DLACZEGO?</button></div>
+  <div class="answer" id="whyAns"></div>
+</section>
+
+</main>
+<script>
+const SECTIONS=[["start","START"],["planeta","PLANETA"],["zbiorniki","ZBiORNiKi"],["slona","SŁONA CZY SŁODKA"],["plywa","CO PŁYWA"],["plastelina","PLASTELiNA"]];
+const nav=document.getElementById('nav');
+SECTIONS.forEach(([id,l],i)=>{const b=document.createElement('button');b.innerHTML=(i?'<b>'+i+'</b>':'')+l;b.dataset.go=id;nav.appendChild(b)});
+const sp=document.createElement('div');sp.className='sp';
+const prev=document.createElement('button');prev.className='arrow';prev.textContent='←';prev.setAttribute('aria-label','Poprzedni');
+const next=document.createElement('button');next.className='arrow';next.textContent='→';next.setAttribute('aria-label','Następny');
+nav.append(sp,prev,next);
+function cur(){const h=location.hash.slice(1);return SECTIONS.some(s=>s[0]===h)?h:'start'}
+function show(){const c=cur();SECTIONS.forEach(([id])=>{document.getElementById(id).hidden=id!==c});nav.querySelectorAll('[data-go]').forEach(b=>b.setAttribute('aria-current',b.dataset.go===c))}
+function go(id){location.hash=id}
+function step(d){const i=SECTIONS.findIndex(s=>s[0]===cur());go(SECTIONS[Math.max(0,Math.min(SECTIONS.length-1,i+d))][0])}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
+prev.onclick=()=>step(-1);next.onclick=()=>step(1);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')step(1);if(e.key==='ArrowLeft'||e.key==='PageUp')step(-1)});
+addEventListener('hashchange',show);
+
+/* dźwięk kropli */
+let ac=null,unlocked=false;
+function ctx(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(ac&&ac.state!=='running')ac.resume();return ac}
+function unlock(){if(unlocked)return;unlocked=true;try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}ctx()}
+['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,unlock,{capture:true,passive:true}));
+function plop(k=0){const a=ctx();if(!a)return;const t=a.currentTime+0.02,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(600+k*60,t);o.frequency.exponentialRampToValueAtTime(1300+k*80,t+0.09);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.6,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+0.18);o.connect(g).connect(a.destination);o.start(t);o.stop(t+0.2)}
+
+
+/* --- Błękitna Planeta: losowe dotknięcia kuli --- */
+let tw=0,tl=0;const pins=document.getElementById('pins');
+function landAt(x,y){const els=document.querySelectorAll('#globe g[clip-path] path');const svg=document.getElementById('globe');const pt=svg.createSVGPoint();pt.x=x;pt.y=y;for(const e of els){if(e.isPointInFill(pt))return true}return false}
+document.getElementById('throw').onclick=()=>{let x,y;do{x=10+Math.random()*280;y=10+Math.random()*280}while((x-150)**2+(y-150)**2>136*136);
+  const land=landAt(x,y);if(land)tl++;else tw++;
+  const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',8);c.setAttribute('fill',land?'#F2C12E':'#fff');c.setAttribute('stroke','#2E2219');c.setAttribute('stroke-width',3);c.setAttribute('class','pin');c.style.transformOrigin=`${x}px ${y}px`;pins.appendChild(c);
+  document.getElementById('tW').textContent=tw;document.getElementById('tL').textContent=tl;plop(land?0:3);
+  const n=tw+tl;document.getElementById('pAns').textContent=n>=10?(tw>tl?'CZĘŚCiEJ TRAFiAMY W WODĘ. NA ZiEMi JEST WiĘCEJ WÓD NiŻ LĄDÓW. DLATEGO NAZYWAMY JĄ BŁĘKiTNĄ PLANETĄ.':'SPRÓBUJMY JESZCZE KiLKA RAZY. CZEGO JEST WiĘCEJ?'):''};
+document.getElementById('treset').onclick=()=>{tw=tl=0;pins.innerHTML='';document.getElementById('tW').textContent=0;document.getElementById('tL').textContent=0;document.getElementById('pAns').textContent=''};
+
+/* --- Zbiorniki --- */
+const W='var(--water)',G='#7DB45A',S='#C9B79C',R='#8C8C8C';
+const ZB=[
+ ['MORZE','DUŻO SŁONEJ WODY, FALE i PLAŻA.',`<rect x="0" y="40" width="120" height="50" fill="${W}"/><path d="M0 50 q15-8 30 0 t30 0 t30 0 t30 0" stroke="#fff" stroke-width="3" fill="none"/><path d="M60 90 Q90 70 120 72 V90Z" fill="${S}"/>`],
+ ['JEZiORO','DUŻO WODY OTOCZONEJ LĄDEM. WODA STOi W MiEJSCU.',`<ellipse cx="60" cy="58" rx="54" ry="24" fill="${W}"/><path d="M8 40 q10-24 20 0 M98 38 q10-24 20 0" fill="${G}"/>`],
+ ['STAW','MAŁY ZBiORNiK, CZĘSTO ZROBiONY PRZEZ LUDZi.',`<ellipse cx="60" cy="60" rx="34" ry="16" fill="${W}"/><path d="M24 56 v-20 M30 56 v-26 M92 58 v-22" stroke="${G}" stroke-width="4"/>`],
+ ['RZEKA','DUŻA, DŁUGA WODA, KTÓRA PŁYNiE.',`<path d="M0 30 C40 30 40 70 80 70 S120 50 120 50" stroke="${W}" stroke-width="18" fill="none"/>`],
+ ['STRUMYK','MAŁA WODA, KTÓRA PŁYNiE. MOŻNA GO PRZESKOCZYĆ.',`<path d="M0 40 C40 40 50 70 80 66 S120 56 120 56" stroke="${W}" stroke-width="7" fill="none"/>`],
+ ['POTOK','SZYBKO PŁYNiE W GÓRACH, PO KAMiENiACH.',`<path d="M0 20 L40 50 L60 40 L120 80" stroke="${W}" stroke-width="10" fill="none"/><circle cx="35" cy="62" r="7" fill="${R}"/><circle cx="85" cy="48" r="8" fill="${R}"/>`],
+ ['WODOSPAD','WODA SPADA Z WYSOKA.',`<rect x="20" y="10" width="30" height="70" fill="${R}"/><rect x="50" y="18" width="22" height="66" fill="${W}"/><rect x="72" y="10" width="30" height="70" fill="${R}"/><ellipse cx="61" cy="86" rx="30" ry="6" fill="${W}"/>`],
+ ['OCEAN','NAJWiĘKSZA SŁONA WODA NA ZiEMi.',`<circle cx="60" cy="50" r="38" fill="${W}"/><path d="M40 30 q10 10 0 22 q-10-6 0-22Z M70 58 q14 6 6 20 q-12-4-6-20Z" fill="${G}"/>`]];
+const cards=document.getElementById('cards');
+ZB.forEach(([n,d,svg])=>{const b=document.createElement('button');b.className='card';b.innerHTML=`<svg viewBox="0 0 120 95">${svg}</svg><span>${n}</span><small hidden>${d}</small>`;b.onclick=()=>{const s=b.querySelector('small');s.hidden=!s.hidden;b.classList.toggle('open',!s.hidden);plop(1)};cards.appendChild(b)});
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.getElementById('zAns').textContent=c.dataset.t});
+
+/* --- Słona / słodka --- */
+const SL=[['MORZE','S'],['OCEAN','S'],['JEZiORO','D'],['RZEKA','D'],['STAW','D'],['STRUMYK','D'],['WODA Z KRANU','D'],['ŁZY','S'],['DESZCZ','D']];
+let sel=null;const pool=document.getElementById('pool');
+function drawPool(){pool.innerHTML='';document.getElementById('inS').innerHTML='';document.getElementById('inD').innerHTML='';document.getElementById('sAns').textContent='';
+  SL.slice().sort(()=>Math.random()-.5).forEach(([w,k])=>{const b=document.createElement('button');b.className='word';b.textContent=w;b.dataset.k=k;b.onclick=()=>{pool.querySelectorAll('.word').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');sel=b};pool.appendChild(b)})}
+document.querySelectorAll('.bucket').forEach(bk=>bk.onclick=()=>{if(!sel)return;if(sel.dataset.k===bk.dataset.b){const s=document.createElement('span');s.textContent=sel.textContent;document.getElementById('in'+bk.dataset.b).appendChild(s);sel.remove();sel=null;plop(2);if(!pool.children.length)document.getElementById('sAns').textContent='WSZYSTKO NA SWOiM MiEJSCU!'}else{sel.classList.add('bad');setTimeout(()=>sel&&sel.classList.remove('bad'),600)}});
+document.getElementById('sReset').onclick=drawPool;
+document.getElementById('sFact').onclick=()=>{document.getElementById('sAns').textContent='NA ZiEMi JEST DUŻO WiĘCEJ WODY SŁONEJ NiŻ SŁODKiEJ. WODY SŁODKiEJ JEST MAŁO, DLATEGO TRZEBA JĄ OSZCZĘDZAĆ.'};
+drawPool();
+
+/* --- Co pływa, co tonie --- */
+const IT=[['ZAPAŁKA','P'],['GUMKA','T'],['SPiNACZ','T'],['OŁÓWEK','P'],['MONETA 2 ZŁ','T'],['KARTKA','P'],['LiŚĆ','P'],['JABŁKO','P'],['LiNiJKA','P'],['KLOCEK','P'],['KULKA Z PLASTELiNY','T'],['MiSECZKA Z PLASTELiNY','P']];
+let check=false;const items=document.getElementById('items');
+function drawItems(){items.innerHTML='';check=false;document.getElementById('mode').textContent='TERAZ SPRAWDZAMY W WODZiE';document.getElementById('pMode').textContent='1. NAJPiERW ZGADUJEMY: DOTKNiJ ODPOWiEDZi.';document.getElementById('iAns').textContent='';
+  IT.forEach(([n])=>{const d=document.createElement('div');d.className='item';d.innerHTML=`<span>${n}</span><div class="tags"></div><div class="opts"><button data-v="P">PŁYWA</button><button data-v="T">TONiE</button></div>`;
+    d.querySelectorAll('.opts button').forEach(b=>b.onclick=()=>{const tags=d.querySelector('.tags');if(!check){d.dataset.g=b.dataset.v;tags.innerHTML=`<span class="tag g">ZGADUJĘ: ${b.dataset.v==='P'?'PŁYWA':'TONiE'}</span>`}else{d.dataset.r=b.dataset.v;tags.innerHTML=(d.dataset.g?`<span class="tag g">${d.dataset.g==='P'?'PŁYWA?':'TONiE?'}</span>`:'')+`<span class="tag ${b.dataset.v==='P'?'p':'t'}">${b.dataset.v==='P'?'PŁYWA':'TONiE'}</span>`;d.classList.toggle('hit',d.dataset.g===b.dataset.v);d.classList.toggle('miss',!!d.dataset.g&&d.dataset.g!==b.dataset.v);score()}plop(b.dataset.v==='P'?4:0)});items.appendChild(d)})}
+function score(){const done=[...items.children].filter(d=>d.dataset.r&&d.dataset.g);const ok=done.filter(d=>d.dataset.r===d.dataset.g).length;document.getElementById('iAns').textContent=done.length?`ZGADLiŚMY ${ok} Z ${done.length}.`:''}
+document.getElementById('mode').onclick=()=>{check=true;document.getElementById('mode').textContent='SPRAWDZAMY…';document.getElementById('pMode').textContent='2. WKŁADAMY DO WODY i ZAZNACZAMY, CO SiĘ STAŁO.'};
+document.getElementById('pReset').onclick=drawItems;drawItems();
+
+/* --- Plastelina --- */
+document.getElementById('drop').onclick=()=>{const b=document.getElementById('ball'),w=document.getElementById('bowl');b.style.transform='translateY(0)';w.style.transform='translateY(0)';document.getElementById('arrows').setAttribute('opacity',0);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.transform='translateY(200px)';w.style.transform='translateY(66px)';plop(0);setTimeout(()=>plop(4),500)}))};
+document.getElementById('why').onclick=()=>{document.getElementById('arrows').setAttribute('opacity',1);document.getElementById('whyAns').textContent='MiSECZKA JEST SZEROKA i DOTYKA DUŻO WODY. WODA WYPYCHA JĄ DO GÓRY. KULKA JEST MAŁA i ZWARTA, WiĘC TONiE.'};
+
+show();
+</script>
+</body></html>
