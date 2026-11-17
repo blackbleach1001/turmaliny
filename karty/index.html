@@ -1,0 +1,26 @@
+<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Karty do druku: woda</title>
+<style>
+body{font-family:Arial,sans-serif;background:#FBFAF6;color:#2E2219;padding:32px 20px;max-width:720px;margin:auto}
+h1{margin:0 0 6px}p{margin:0 0 20px;color:#5a4d42}
+ol{padding:0;list-style:none;counter-reset:k}
+li{counter-increment:k;display:flex;gap:14px;align-items:flex-start;border:2px solid #2E2219;border-radius:8px;padding:14px 16px;margin:10px 0;background:#fff}
+li:before{content:counter(k);font-weight:700;font-size:22px;width:34px;height:34px;flex:none;border-radius:50%;background:#2F8FD0;color:#fff;display:grid;place-items:center}
+li b{display:block;font-size:20px;margin-bottom:2px}
+.btn{display:block;text-align:center;font-size:22px;font-weight:700;padding:16px;margin:18px 0 8px;border-radius:8px;background:#2E2219;color:#fff;text-decoration:none}
+.btn.ghost{background:none;color:#2E2219;border:2px solid #2E2219}
+a.back{color:#2E2219}
+</style></head>
+<body>
+<h1>Karty do druku: woda</h1>
+<p>Błękitna Planeta i doświadczenie w grupach: co pływa, co tonie. 4 strony A4.</p>
+<a class="btn" href="https://www.canva.com/d/3AeCvSqllomao4P">Otwórz karty</a>
+<a class="btn ghost" id="pdf" href="karty-woda.pdf" hidden>Pobierz PDF</a>
+<ol>
+<li><div><b>Instrukcja na stanowisko</b>Co jest na stoliku grupy i co robimy po kolei.</div></li>
+<li><div><b>Karta obserwacji: co pływa? co tonie?</b>10 przedmiotów: myślę, sprawdzam, zgadza się?</div></li>
+<li><div><b>Spróbuj taki kształt!</b>Ten sam kawałek plasteliny w 6 kształtach, wyzwanie ze spinaczami i pytanie „dlaczego?”.</div></li>
+<li><div><b>Błękitna Planeta</b>Woda czy ląd, zbiorniki wodne, słona czy słodka, woda blisko mojego domu.</div></li>
+</ol>
+<p><a class="back" href="../">← Wszystkie strony</a></p>
+<script>fetch('karty-woda.pdf',{method:'HEAD'}).then(r=>{if(r.ok)document.getElementById('pdf').hidden=false}).catch(()=>{})</script>
+</body></html>
